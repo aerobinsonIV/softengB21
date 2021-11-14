@@ -9,7 +9,7 @@ create table task
     id      int                                       not null primary key auto_increment,
     name    varchar(100)                                         not null,
     parent  int                                          null,
-    status  enum ('complete', 'in_progress', 'subtasks') not null default 'in_progress',
+    status  enum ('complete', 'in_progress', 'not_markable') not null default 'in_progress',
     project varchar(100)                                         not null,
     foreign key (parent) references task (id) on delete cascade on update cascade,
     foreign key (project) references project (name) on delete cascade on update cascade
