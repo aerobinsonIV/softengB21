@@ -11,5 +11,47 @@
     }
   ],
   "paths": {
+    "/teammate/{project_name}/{teammate_name}": {
+      "post": {
+        "description": "Create a new teammate in `project_name` project with name `teammate_name`.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Created teammate under project.",
+            "schema": {
+            }
+          }
+        }
+      },
+      "delete": {}
+    },
+    "/task": {
+      "post": {}
+    },
+    "/task/{id}/decompose": {
+      "post": {}
+    },
+    "/task/{id}/assign": {
+      "post": {}
+    },
+    "/task/{id}/mark": {
+      "post": {}
+    },
+    "/task/{id}/rename": {
+      "post": {}
+    },
+    "/project/": {
+      "get": {}
+    },
+    "/project/{name}": {
+      "post": {},
+      "delete": {},
+      "get": {}
+    },
+    "/project/{name}/archive": {
+      "post": {}
+    }
   }
 }
