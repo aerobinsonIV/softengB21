@@ -53,5 +53,85 @@
     "/project/{name}/archive": {
       "post": {}
     }
+  },
+  "definitions": {
+    "Project": {
+      "type": "object",
+      "required": [
+        "name",
+        "tasks",
+        "team",
+        "isArchived"
+      ],
+
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "Task"
+          }
+        },
+        "team": {
+          "type": "array",
+          "items": {
+            "type": "Teammate"
+          }
+        },
+        "isArchived": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Teammate": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Task": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "subtasks",
+        "markStatus",
+        "teammates"
+      ],
+
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "subtasks": {
+          "type": "array",
+          "items": {
+            "type": "Task"
+          }
+        },
+        "markStatus": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "teammates": {
+          "type": "array",
+          "items": {
+            "type": "Teammate"
+          }
+        }
+      }
+    }
   }
 }
