@@ -54,7 +54,7 @@
       "post": {}
     }
   },
-  "definitions": {
+  "components": {
     "Project": {
       "type": "object",
       "required": [
