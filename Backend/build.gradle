@@ -10,8 +10,11 @@ repositories {
 }
 
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.107')
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
 }
 
 test {
