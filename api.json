@@ -687,7 +687,7 @@
                 }
             }
         },
-        "/listprojects": {
+        "/project": {
             "get": {
                 "description": "Retrieves all projects (archived or not).",
                 "responses": {
