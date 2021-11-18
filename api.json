@@ -161,52 +161,6 @@
                         }
                     }
                 }
-            }, 
-            "get": {
-                "description": "Retreive the task in `project_name` project with `id`.",
-                "parameters": [
-                    {
-                        "name": "project_name",
-                        "in": "path",
-                        "description": "Name of Project to get a Task from.",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }, 
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID of task to get from the Project.",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Retrieved task under project.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref" : "#/components/schemas/Task"
-                                }
-                            }
-                        }
-                    },
-                    "4XX": {
-                        "description": "Invalid Parameter(s)",
-                        "content": {
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
-                                }
-                            }
-                        }
-                    }
-                }
             }
         },
         "/task/decompose/{project_name}/{id}": {
