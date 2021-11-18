@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https"
+            "url": "https://"
         }
     ],
     "paths": {
@@ -609,7 +609,7 @@
                 }
             }
         },
-        "/project/archive/{name}": {
+        "/project/archive/{project_name}": {
             "post": {
                 "description": "Archives the project with `project_name`.",
                 "parameters": [
@@ -648,7 +648,7 @@
                 }
             }
         },
-        "/project/unarchive/{name}": {
+        "/project/unarchive/{project_name}": {
             "post": {
                 "description": "Unarchives the project with `project_name`.",
                 "parameters": [
@@ -735,13 +735,13 @@
                     "tasks": {
                         "type": "array",
                         "items": {
-                            "type": "Task"
+                            "$ref": "#/components/schemas/Task"
                         }
                     },
                     "team": {
                         "type": "array",
                         "items": {
-                            "type": "Teammate"
+                            "$ref": "#/components/schemas/Teammate"
                         }
                     },
                     "isArchived": {
@@ -780,7 +780,7 @@
                     "subtasks": {
                         "type": "array",
                         "items": {
-                            "type": "Task"
+                            "$ref": "#/components/schemas/Task"
                         }
                     },
                     "markStatus": {
@@ -790,7 +790,7 @@
                     "teammates": {
                         "type": "array",
                         "items": {
-                            "type": "Teammate"
+                            "$ref": "#/components/schemas/Teammate"
                         }
                     }
                 }
