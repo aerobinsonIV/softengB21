@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.3",
     "info": {
-        "title": "Title",
-        "description": "Title",
+        "title": "Project Management App API",
+        "description": "API for an app to manage projects by Zach, Eli, Iv, and Jatin for CS 3733 B21",
         "version": "1.0.0"
     },
     "servers": [
@@ -48,10 +48,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -95,10 +94,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -152,10 +150,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -212,10 +209,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -269,10 +265,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -324,10 +319,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -381,10 +375,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -438,10 +431,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -477,10 +469,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -514,10 +505,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -552,10 +542,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -591,10 +580,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -630,10 +618,9 @@
                     "4XX": {
                         "description": "Invalid Parameter(s)",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "One or more of the provided parameters was invalid."
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -658,12 +645,12 @@
                             }
                         }
                     },
-                    "default": {
+                    "4XX": {
                         "description": "Unexpected Error",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string"
+                                    "$ref": "#/components/schemas/ErrorResponse"
                                 }
                             }
                         }
@@ -734,18 +721,30 @@
                     "subtasks": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/Task"
+                            "type": "integer",
+                            "format": "int64"
                         }
                     },
                     "markStatus": {
-                        "type": "integer",
-                        "format": "int32"
+                        "type": "string"
                     },
                     "teammates": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/Teammate"
                         }
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "message": {
+                        "type": "string"
                     }
                 }
             }
