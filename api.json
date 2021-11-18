@@ -57,7 +57,54 @@
                     }
                 }
             },
-            "delete": {
+            "get": {
+                "description": "Retrieve the teammate in `project_name` project with name `teammate_name`.",
+                "parameters": [
+                    {
+                        "name": "project_name",
+                        "in": "path",
+                        "description": "Name of Project to retrieve the Teammate from.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, 
+                    {
+                        "name": "teammate_name",
+                        "in": "path",
+                        "description": "Name of Teammate to retrieve from the Project.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieved teammate under project.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Teammate"
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "description": "Invalid Parameter(s)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/teammate/delete/{project_name}/{id}": {
+            "post": {
                 "description": "Deletes the teammate in `project_name` project with name `teammate_name`.",
                 "parameters": [
                     {
@@ -83,10 +130,9 @@
                     "200": {
                         "description": "Deleted teammate under project.",
                         "content": {
-                            "text/plain": {
+                            "applicaton/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "Successfully removed teammate."
+                                    "$ref": "#/components/schemas/Project"
                                 }
                             }
                         }
@@ -128,7 +174,7 @@
                     },
                     {
                         "name": "name",
-                        "in": "query",
+                        "in": "header",
                         "description": "Name of task to add to the Project.",
                         "required": false,
                         "schema": {
@@ -139,6 +185,51 @@
                 "responses": {
                     "200": {
                         "description": "Created task under project.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "4XX": {
+                        "description": "Invalid Parameter(s)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "description": "Retrieve the task in `project_name` project with `id`.",
+                "parameters": [
+                    {
+                        "name": "project_name",
+                        "in": "path",
+                        "description": "Name of Project to retrieve the Task from.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }, 
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of task to retrieve from the Project.",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Retrieve task under project.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -273,8 +364,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/task/unassign/{project_name}/{id}/{teammate_name}": {
+            "post": {
                 "description": "Unassigns a teammate from the task in `project_name` project with `id`.",
                 "parameters": [
                     {
@@ -513,8 +606,10 @@
                         }
                     }
                 }
-            },
-            "delete": {
+            }
+        },
+        "/project/delete/{project_name}": {
+            "post": {
                 "description": "Deletes the project with `project_name`.",
                 "parameters": [
                     {
@@ -531,10 +626,9 @@
                     "200": {
                         "description": "Deleted Project.",
                         "content": {
-                            "text/plain": {
+                            "application/json": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "Successfully deleted project."
+                                    "type": "string"
                                 }
                             }
                         }
