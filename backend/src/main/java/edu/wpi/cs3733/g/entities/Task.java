@@ -1,9 +1,14 @@
 package edu.wpi.cs3733.g.entities;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+
 public class Task {
     private String _name;
     private int _id;
     private TaskMarkValue _mark = TaskMarkValue.IN_PROGRESS;
+    private ArrayList<Teammate> _assignedTeammates = new ArrayList<Teammate>();
 
     public Task(String name, int id){
         _name = name;
@@ -24,5 +29,17 @@ public class Task {
 
     public TaskMarkValue getMark(){
         return _mark;
+    }
+
+    public Collection<Teammate> getAssignedTeammates(){
+        return _assignedTeammates;
+    }
+
+    public void assignTeammate(Teammate t){
+        _assignedTeammates.add(t);
+    }
+
+    public void removeTeammate(Teammate t){
+        _assignedTeammates.remove(t);
     }
 }
