@@ -81,3 +81,5 @@ gradle-app.setting
 .gradletasknamecache
 .idea/
 .aws-sam/
+.classpath
+.project
