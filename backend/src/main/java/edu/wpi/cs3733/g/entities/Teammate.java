@@ -11,6 +11,5 @@ public class Teammate {
     public String getName(){
         return _name;
     }
-
 }
 
