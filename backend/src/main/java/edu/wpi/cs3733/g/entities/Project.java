@@ -1,2 +1,4 @@
-package edu.wpi.cs3733.g.entities;public class Project {
+package edu.wpi.cs3733.g.entities;
+
+public class Project {
 }
