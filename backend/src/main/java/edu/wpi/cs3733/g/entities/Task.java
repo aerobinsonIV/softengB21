@@ -50,12 +50,12 @@ public class Task {
     public void removeTeammate(String name){
 
         //Loop through all assigned teammates
-        for(int i = 0; i < _assignedTeammates.size(); i ++){
+        for(Teammate curTeammate : _assignedTeammates){
 
             //If we find a teammate whose name matches the arg, remove
-            Teammate curTeammate = _assignedTeammates.get(i);
             if(curTeammate.getName() == name){
                 _assignedTeammates.remove(curTeammate);
+                return;
             }
         }
     }

@@ -34,12 +34,12 @@ public class Project {
 
     public void removeTeammate(String name){
         //Loop through all teammates
-        for(int i = 0; i < _team.size(); i ++){
+        for(Teammate curTeammate : _team){
 
             //If we find a teammate whose name matches, remove
-            Teammate curTeammate = _team.get(i);
             if(curTeammate.getName() == name){
                 _team.remove(curTeammate);
+                return;
             }
         }
     }
@@ -61,11 +61,10 @@ public class Project {
     }
 
     public Task getTask(int id){
-        //Loop through all assigned task
-        for(int i = 0; i < _tasks.size(); i ++){
+        //Loop through all assigned tasks
+        for(Task curTask : _tasks){
 
             //If we find a task whose id matches, return
-            Task curTask = _tasks.get(i);
             if(curTask.getId() == id){
                 return curTask;
             }
