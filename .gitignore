@@ -83,3 +83,4 @@ gradle-app.setting
 .aws-sam/
 .classpath
 .project
+.vscode/
