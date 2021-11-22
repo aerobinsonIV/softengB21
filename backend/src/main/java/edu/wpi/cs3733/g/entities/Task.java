@@ -9,6 +9,7 @@ public class Task {
     private int _id;
     private TaskMarkValue _mark = TaskMarkValue.IN_PROGRESS;
     private ArrayList<Teammate> _assignedTeammates = new ArrayList<Teammate>();
+    private ArrayList<Task> _subtasks = new ArrayList<Task>();
 
     public Task(String name, int id){
         _name = name;
@@ -39,7 +40,35 @@ public class Task {
         _assignedTeammates.add(t);
     }
 
+    //Remove methods are void return type because it's not the entities responsibility to determine if these fail.
+    //As much logic as possible should be in controller.
+
     public void removeTeammate(Teammate t){
         _assignedTeammates.remove(t);
+    }
+
+    public void removeTeammate(String name){
+
+        //Loop through all assigned teammates
+        for(int i = 0; i < _assignedTeammates.size(); i ++){
+
+            //If we find a teammate whose name matches the arg, remove
+            Teammate curTeammate = _assignedTeammates.get(i);
+            if(curTeammate.getName() == name){
+                _assignedTeammates.remove(curTeammate);
+            }
+        }
+    }
+
+    public boolean isLeafTask(){
+        return _subtasks.size() == 0;
+    }
+
+    public void addSubtask(Task subtask){
+        _subtasks.add(subtask);
+    }
+
+    public ArrayList<Task> getSubtasks(){
+        return _subtasks;
     }
 }

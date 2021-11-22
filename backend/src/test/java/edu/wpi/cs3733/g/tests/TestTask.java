@@ -1,6 +1,9 @@
 package edu.wpi.cs3733.g.tests;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.*;
 
 import edu.wpi.cs3733.g.entities.Task;
@@ -119,5 +122,68 @@ public class TestTask {
         assertEquals(0, testTask.getAssignedTeammates().size());
         assertFalse(testTask.getAssignedTeammates().contains(peebo));
         assertFalse(testTask.getAssignedTeammates().contains(iv));
+    }
+
+    @Test
+    public void testRemoveOneTeammateByName(){
+        Task testTask = new Task("", 42);
+        
+        Teammate peebo = new Teammate("Peebo");
+        testTask.assignTeammate(peebo);
+        Teammate iv = new Teammate("Iv");
+        testTask.assignTeammate(iv);
+
+        testTask.removeTeammate("Peebo");
+
+        assertEquals(1, testTask.getAssignedTeammates().size());
+        assertFalse(testTask.getAssignedTeammates().contains(peebo));
+        assertTrue(testTask.getAssignedTeammates().contains(iv));
+    }
+
+    @Test
+    public void testRemoveTwoTeammatesByName(){
+        Task testTask = new Task("", 42);
+        
+        Teammate peebo = new Teammate("Peebo");
+        testTask.assignTeammate(peebo);
+        Teammate iv = new Teammate("Iv");
+        testTask.assignTeammate(iv);
+
+        testTask.removeTeammate("Peebo");
+        testTask.removeTeammate("Iv");
+
+        assertEquals(0, testTask.getAssignedTeammates().size());
+        assertFalse(testTask.getAssignedTeammates().contains(peebo));
+        assertFalse(testTask.getAssignedTeammates().contains(iv));
+    }
+
+    //TODO: test removing teammates that don't exist and make sure nothing happens
+
+    @Test
+    public void testIsLeafTask(){
+        Task testTask = new Task("", 42);
+        Task testSubtask = new Task("", 1337);
+
+        assertTrue(testTask.isLeafTask());
+        testTask.addSubtask(testSubtask);
+        assertFalse(testTask.isLeafTask());
+    }
+
+    @Test
+    public void testSubtasks(){
+        Task testTask = new Task("", 42);
+        Task testSubtask1 = new Task("", 1337); 
+        Task testSubtask2 = new Task("", 5);
+
+        assertEquals(0, testTask.getSubtasks().size());
+        testTask.addSubtask(testSubtask1);
+        testTask.addSubtask(testSubtask2);
+
+        ArrayList<Task> subtasks = testTask.getSubtasks();
+
+        assertEquals(2, subtasks.size());
+
+        assertTrue(subtasks.contains(testSubtask1));
+        assertTrue(subtasks.contains(testSubtask2));
     }
 }
