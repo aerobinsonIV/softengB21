@@ -2,14 +2,20 @@ package edu.wpi.cs3733.g.entities;
 
 public class Teammate {
 
-    private String _name;
+    private String name;
+    private String project;
 
-    public Teammate(String name){
-        _name = name;
+    public Teammate(String name, String project) {
+        this.name = name;
+        this.project = project;
     }
 
-    public String getName(){
-        return _name;
+    public String getName() {
+        return name;
+    }
+
+    public String getProject() {
+        return project;
     }
 }
 
