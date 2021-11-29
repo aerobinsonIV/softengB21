@@ -1,48 +1,47 @@
 package edu.wpi.cs3733.g.tests;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.ArrayList;
-
-import org.junit.jupiter.api.*;
-
 import edu.wpi.cs3733.g.entities.Task;
 import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestTask {
     @Test
-    public void testName(){
+    public void testName() {
         Task testTask = new Task("Write unit tests", 42);
         assertTrue(testTask.getName().equals("Write unit tests"));
 
     }
 
     @Test
-    public void testNameNull(){
+    public void testNameNull() {
         Task testTask = new Task(null, 42);
         assertFalse(testTask.getName() != null);
 
     }
 
     @Test
-    public void testNameEmpty(){
+    public void testNameEmpty() {
         Task testTask = new Task("", 42);
         assertTrue(testTask.getName().equals(""));
 
     }
 
     @Test
-    public void testId(){
+    public void testId() {
         Task testTask = new Task("", 42);
         assertEquals(42, testTask.getId());
     }
 
     @Test
-    public void testMark(){
+    public void testMark() {
         Task testTask = new Task("", 42);
         assertEquals(TaskMarkValue.IN_PROGRESS, testTask.getMark());
-        
+
         testTask.setMark(TaskMarkValue.COMPLETE);
         assertEquals(TaskMarkValue.COMPLETE, testTask.getMark());
 
@@ -51,7 +50,7 @@ public class TestTask {
     }
 
     @Test
-    public void testMarkNull(){
+    public void testMarkNull() {
         Task testTask = new Task("", 42);
 
         testTask.setMark(null);
@@ -59,17 +58,17 @@ public class TestTask {
     }
 
     @Test
-    public void testAssignedTeammatesStartsEmpty(){
+    public void testAssignedTeammatesStartsEmpty() {
         Task testTask = new Task("", 42);
-        
+
         assertEquals(0, testTask.getAssignedTeammates().size());
     }
 
     @Test
-    public void testAssignOneTeammate(){
+    public void testAssignOneTeammate() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
 
         assertEquals(1, testTask.getAssignedTeammates().size());
@@ -77,13 +76,13 @@ public class TestTask {
     }
 
     @Test
-    public void testAssignMultipleTeammates(){
+    public void testAssignMultipleTeammates() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
 
-        Teammate iv = new Teammate("Iv");
+        Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
         assertEquals(2, testTask.getAssignedTeammates().size());
@@ -92,12 +91,12 @@ public class TestTask {
     }
 
     @Test
-    public void testRemoveOneTeammateByReference(){
+    public void testRemoveOneTeammateByReference() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
-        Teammate iv = new Teammate("Iv");
+        Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
         testTask.removeTeammate(peebo);
@@ -108,12 +107,12 @@ public class TestTask {
     }
 
     @Test
-    public void testRemoveTwoTeammatesByReference(){
+    public void testRemoveTwoTeammatesByReference() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
-        Teammate iv = new Teammate("Iv");
+        Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
         testTask.removeTeammate(peebo);
@@ -125,12 +124,12 @@ public class TestTask {
     }
 
     @Test
-    public void testRemoveOneTeammateByName(){
+    public void testRemoveOneTeammateByName() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
-        Teammate iv = new Teammate("Iv");
+        Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
         testTask.removeTeammate("Peebo");
@@ -141,12 +140,12 @@ public class TestTask {
     }
 
     @Test
-    public void testRemoveTwoTeammatesByName(){
+    public void testRemoveTwoTeammatesByName() {
         Task testTask = new Task("", 42);
-        
-        Teammate peebo = new Teammate("Peebo");
+
+        Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
-        Teammate iv = new Teammate("Iv");
+        Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
         testTask.removeTeammate("Peebo");
@@ -160,7 +159,7 @@ public class TestTask {
     //TODO: test removing teammates that don't exist and make sure nothing happens
 
     @Test
-    public void testIsLeafTask(){
+    public void testIsLeafTask() {
         Task testTask = new Task("", 42);
         Task testSubtask = new Task("", 1337);
 
@@ -170,9 +169,9 @@ public class TestTask {
     }
 
     @Test
-    public void testSubtasks(){
+    public void testSubtasks() {
         Task testTask = new Task("", 42);
-        Task testSubtask1 = new Task("", 1337); 
+        Task testSubtask1 = new Task("", 1337);
         Task testSubtask2 = new Task("", 5);
 
         assertEquals(0, testTask.getSubtasks().size());
