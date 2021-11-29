@@ -85,8 +85,7 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "Successfully removed teammate."
+                                    "$ref": "#/components/schemas/SuccessResponse"
                                 }
                             }
                         }
@@ -533,8 +532,7 @@
                         "content": {
                             "text/plain": {
                                 "schema": {
-                                    "type": "string",
-                                    "default": "Successfully deleted project."
+                                    "$ref": "#/components/schemas/SuccessResponse"
                                 }
                             }
                         }
@@ -743,6 +741,14 @@
                         "type": "integer",
                         "format": "int64"
                     },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SuccessResponse": {
+                "type": "object",
+                "properties": {
                     "message": {
                         "type": "string"
                     }
