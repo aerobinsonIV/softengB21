@@ -5,6 +5,7 @@ import edu.wpi.cs3733.g.entities.Teammate;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 
 public class DatabaseAccess {
     public static String database_url = System.getenv("DB_URL");
@@ -14,12 +15,15 @@ public class DatabaseAccess {
     private static Connection connection;
 
     private static Connection connect() throws Exception {
+        Class.forName("com.mysql.jdbc.Driver");
+
         if (connection != null) {
             return connection;
         }
 
         try {
             connection = DriverManager.getConnection(database_url, database_username, database_password);
+            connection.prepareStatement("use group_project;").execute();
             return connection;
         } catch (Exception e) {
             e.printStackTrace();
@@ -29,7 +33,7 @@ public class DatabaseAccess {
 
     public static boolean createTeammate(Teammate teammate) throws Exception {
         try {
-            var statement = connect().prepareStatement("insert into teammate values (?, ?);");
+            PreparedStatement statement = connect().prepareStatement("insert into teammate values (?, ?);");
             statement.setString(1, teammate.getName());
             statement.setString(2, teammate.getProject());
             statement.execute();
@@ -41,7 +45,7 @@ public class DatabaseAccess {
 
     public static boolean removeTeammate(Teammate teammate) throws Exception {
         try {
-            var statement = connect().prepareStatement("delete from teammate where name = ? and project = ?;");
+            PreparedStatement statement = connect().prepareStatement("delete from teammate where name = ? and project = ?;");
             statement.setString(1, teammate.getName());
             statement.setString(2, teammate.getProject());
             statement.execute();
@@ -51,9 +55,21 @@ public class DatabaseAccess {
         }
     }
 
+    public static boolean createProject(Project project) throws Exception {
+        try {
+            PreparedStatement statement = connect().prepareStatement("insert into project values (?, 0);");
+            statement.setString(1, project.getName());
+            statement.execute();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to create project!");
+        }
+    }
+
     public static boolean deleteProject(Project project) throws Exception {
         try {
-            var statement = connect().prepareStatement("delete from project where name = ?;");
+            PreparedStatement statement = connect().prepareStatement("delete from project where name = ?;");
             statement.setString(1, project.getName());
             statement.execute();
             return true;
