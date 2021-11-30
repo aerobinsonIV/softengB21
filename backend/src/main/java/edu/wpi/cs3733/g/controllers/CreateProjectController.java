@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
+import edu.wpi.cs3733.g.requests.CreateProjectRequest;
 
 public class CreateProjectController implements RequestHandler<CreateProjectRequest, CreateProjectResponse> {
     @Override
