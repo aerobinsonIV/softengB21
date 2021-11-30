@@ -59,6 +59,7 @@ public class DatabaseAccess {
         try {
             PreparedStatement statement = connect().prepareStatement("insert into project values (?, 0);");
             statement.setString(1, project.getName());
+            System.out.println(statement.toString());
             statement.execute();
             return true;
         } catch (Exception e) {
