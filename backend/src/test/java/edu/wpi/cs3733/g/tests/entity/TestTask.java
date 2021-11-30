@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.g.tests;
+package edu.wpi.cs3733.g.tests.entity;
 
 import edu.wpi.cs3733.g.entities.Task;
 import edu.wpi.cs3733.g.entities.TaskMarkValue;

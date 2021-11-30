@@ -5,9 +5,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
 
-public class CreateProjectController implements RequestHandler<CreateProjectRequest, Project> {
+public class CreateProjectController implements RequestHandler<CreateProjectRequest, CreateProjectResponse> {
     @Override
-    public Project handleRequest(CreateProjectRequest req, Context context) {
+    public CreateProjectResponse handleRequest(CreateProjectRequest req, Context context) {
         Project project = new Project(req.getName());
 
         try {
@@ -16,15 +16,15 @@ public class CreateProjectController implements RequestHandler<CreateProjectRequ
 
             if(success) {
                 System.out.println("Create project success");
-                return project;
+                return new CreateProjectResponse(project);
             }
         } catch (Exception e) {
             System.out.println("Failure");
             e.printStackTrace();
             // TODO: Swap to some sort of GenericErrorResponse
-            return new Project("Failed");
+            return new CreateProjectResponse(null);
         }
 
-        return new Project("Should not reach here");
+        return new CreateProjectResponse(null);
     }
 }
