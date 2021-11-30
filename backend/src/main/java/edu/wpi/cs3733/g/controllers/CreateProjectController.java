@@ -11,7 +11,7 @@ public class CreateProjectController implements RequestHandler<CreateProjectRequ
         Project project = new Project(req.getName());
 
         try {
-            System.out.println("Creating project");
+            System.out.println("Creating project: " + project.getName());
             boolean success = DatabaseAccess.createProject(project);
 
             if(success) {
