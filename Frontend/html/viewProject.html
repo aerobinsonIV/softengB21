@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+
+        <!-- relative path-name to access js -->
+        <script type='text/javascript' src='../js/createProject.js'></script>
+        </script>
+    </head>
+    <script type="text/javascript">
+        function initialize() {
+            // load project from aws using path parameters
+            // location.pathname to get url path
+        };
+    </script>
+    <style>
+        div {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+    </style>
+    <body onload="initialize()">
+        <h1 id="project-header">View Project</h1>
+
+        <button type="button" id="new-task-btn">New Task</button>
+
+        <div id="task-view"> 
+            <div id="1">Example Task 1</div>
+            <div id="1">Example Task 2</div>
+        </div>
+    </body>
+</html>

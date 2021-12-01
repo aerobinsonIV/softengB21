@@ -1,4 +1,4 @@
-function handleViewProjectRequest(e) {
+function handleCreateProjectClick(e) {
     var form = document.createProjectForm
     var name = form.name.value
 
