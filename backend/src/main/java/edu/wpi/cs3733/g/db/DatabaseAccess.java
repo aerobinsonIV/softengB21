@@ -6,6 +6,7 @@ import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DatabaseAccess {
@@ -106,6 +107,43 @@ public class DatabaseAccess {
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to get project!");
+        }
+    }
+
+    public static ArrayList<Project> getAllProjects() throws Exception {
+        try {
+            PreparedStatement proj = connect().prepareStatement("select * from project");
+            proj.execute();
+
+            ResultSet results = proj.getResultSet();
+            results.last(); //Move cursor to last row
+            int numRows = results.getRow();
+
+            if(numRows == 0) {
+                throw new Exception("Project row count was 0");
+            }
+
+            ArrayList<Project> projects = new ArrayList<>();
+            for(int i = 1; i <= numRows; i ++){
+                results.absolute(i); // Move cursor to row i
+
+                int archived = results.getInt(2);
+                String projectName = results.getString(1);
+                
+                Project tempProject = new Project(projectName);
+
+                if(archived == 1){
+                    tempProject.archive();
+                }
+
+                projects.add(tempProject);
+            }
+
+            return projects;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to get all the projects!");
         }
     }
 
