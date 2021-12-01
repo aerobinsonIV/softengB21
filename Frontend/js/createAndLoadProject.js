@@ -63,6 +63,19 @@ function renderProject(response) {
     document.getElementById("create-project-form").setAttribute("class", "hidden")
     document.getElementById("load-project-form").setAttribute("class", "hidden")
 
+    document.getElementById("landing-btn").setAttribute("class", "padded")
     document.getElementById("new-task-btn").setAttribute("class", "padded")
     document.getElementById("task-view").setAttribute("class", "padded")
+}
+
+function renderLandingPage() {
+    document.getElementById("create-header").innerHTML = "Create Project"
+    document.getElementById("load-header").innerHTML = "Load Project"
+
+    document.getElementById("create-project-form").setAttribute("class", "")
+    document.getElementById("load-project-form").setAttribute("class", "")
+
+    document.getElementById("landing-btn").setAttribute("class", "hidden")
+    document.getElementById("new-task-btn").setAttribute("class", "hidden")
+    document.getElementById("task-view").setAttribute("class", "hidden")
 }
