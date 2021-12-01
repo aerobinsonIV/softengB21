@@ -7,22 +7,36 @@
         <script type='text/javascript' src='../js/createAndLoadProject.js'></script>
         </script>
     </head>
-    <!-- <body onload="initialize()"> -->
+    <style>
+        .padded {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
     <body>
-    
-        <h1>Create project</h1>
+        <h1 id="create-header">Create project</h1>
         
-        <form id="createProjectForm" method="post">
-        <input id="create-input" value="" />
-        <input type="button" value="Submit" onClick="JavaScript:handleCreateProjectClick(this)">
+        <form id="create-project-form" method="post">
+            <input id="create-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:handleCreateProjectClick(this)">
         </form>
 
-        <h1>Load project</h1>
+        <h1 id="load-header">Load project</h1>
         
-        <form id="loadProjectForm" method="post">
-        <input id="load-input" value="" />
-        <input type="button" value="Submit" onClick="JavaScript:handleLoadProjectClick(this)">
+        <form id="load-project-form" method="post">
+            <input id="load-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:handleLoadProjectClick(this)">
         </form>
 
+        <button type="button" id="new-task-btn" class="hidden">New Task</button>
+
+        <div id="task-view" class="hidden"> 
+            <div id="1" class="padded">Example Task 1</div>
+            <div id="2" class="padded">Example Task 2</div>
+        </div>
     </body>
 </html>
