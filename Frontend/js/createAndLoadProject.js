@@ -16,7 +16,8 @@ function handleCreateProjectClick(e) {
             if (jsonResponse["error"] == "Failed to create project.") {
                 alert('Project with name ' + jsonResponse["name"] + ' already exists.')
             } else {
-                renderProject(jsonResponse["name"])
+                jsonResponse["isArchived"] = false // simulate actually returning a project object with an isArchived value
+                renderProject(jsonResponse)
             }
         } else {
             alert('Something went wrong')
@@ -42,7 +43,7 @@ function handleLoadProjectClick(e) {
             if (jsonResponse["name"] == "Failed") {
                 alert('Project with name ' + name + ' does not exist.')
             } else {
-                renderProject(jsonResponse["name"])
+                renderProject(jsonResponse)
             }
         } else {
             alert('Something went wrong')
@@ -50,13 +51,16 @@ function handleLoadProjectClick(e) {
     }
 }
 
-function renderProject(name) {
+function renderProject(response) {
+    var name = response["name"]
+    var isArchived = response["isArchived"]
+
     console.log("rendering project with name: " + name)
 
     document.getElementById("create-header").innerHTML = "Project " + name
+    document.getElementById("load-header").innerHTML = (isArchived ? "" : "Not ") + "Archived"
 
     document.getElementById("create-project-form").setAttribute("class", "hidden")
-    document.getElementById("load-header").setAttribute("class", "hidden")
     document.getElementById("load-project-form").setAttribute("class", "hidden")
 
     document.getElementById("new-task-btn").setAttribute("class", "padded")
