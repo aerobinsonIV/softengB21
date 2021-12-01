@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+
+        <!-- relative path-name to access js -->
+        <script type='text/javascript' src='../js/admin.js'></script>
+        </script>
+    </head>
+    <style>
+        .padded {
+            padding-bottom: 5px;
+            padding-top: 5px;
+        }
+    </style>
+    <body onload="loadProjects()">
+        <h1 id="projects-header">All Projects</h1>
+
+        <div id="projects-list" class="padded"></div>
+        
+        <h1 id="archive-header">Archive project</h1>
+        <form id="create-project-form" method="post">
+            <input id="create-input" value="" />
+            <input type="button" value="Submit">
+        </form>
+
+        <h1 id="delete-header">Delete project</h1>
+        <form id="create-project-form" method="post">
+            <input id="create-input" value="" />
+            <input type="button" value="Submit">
+        </form>
+    </body>
+</html>
