@@ -1,11 +1,12 @@
 package edu.wpi.cs3733.g.db;
 
 import edu.wpi.cs3733.g.entities.Project;
+import edu.wpi.cs3733.g.entities.Task;
+import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.Map;
 
 public class DatabaseAccess {
     public static String database_url = System.getenv("DB_URL");
@@ -65,6 +66,46 @@ public class DatabaseAccess {
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to create project!");
+        }
+    }
+
+    public static Project getProject(Project project) throws Exception {
+        try {
+            PreparedStatement proj = connect().prepareStatement("select * from project where name=?");
+            proj.setString(1, project.getName());
+            proj.execute();
+
+            proj.getResultSet().last();
+
+            if(proj.getResultSet().getRow() == 0) {
+                throw new Exception("Project row count was 0");
+            }
+
+            if(proj.getResultSet().getInt(2) == 1) {
+                project.archive();
+            }
+
+            // TODO: Populate the project object with tasks and teammates
+            /*
+            PreparedStatement tasks = connect().prepareStatement("select * from task where project=?");
+            tasks.setString(1, project.getName());
+            tasks.execute();
+
+            ResultSet rs = tasks.getResultSet();
+            ResultSetMetaData md = rs.getMetaData();
+
+            while(rs.next()) {
+                //                   Task name          Task id
+                Task task = new Task(rs.getString(2), rs.getInt(1));
+                //                                  TaskMarkValue
+                task.setMark(TaskMarkValue.values()[rs.getInt(4)]);
+                task.
+            }*/
+
+            return project;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to get project!");
         }
     }
 

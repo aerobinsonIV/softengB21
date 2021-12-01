@@ -35,25 +35,25 @@ public class TestProject {
     @Test
     public void testArchive() {
         Project testProject = new Project("Starship");
-        assertFalse(testProject.isArchived());
+        assertFalse(testProject.getIsArchived());
         testProject.archive();
-        assertTrue(testProject.isArchived());
+        assertTrue(testProject.getIsArchived());
 
         //Archive shouldn't be a toggle
         testProject.archive();
-        assertTrue(testProject.isArchived());
+        assertTrue(testProject.getIsArchived());
     }
 
     @Test
     public void testAddOneTask() {
         Project testProject = new Project("Starship");
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
         Task testTask = new Task("Build raptor engine", 1);
         testProject.addTask(testTask);
 
-        ArrayList<Task> allTasks = testProject.getAllTasks();
+        ArrayList<Task> allTasks = testProject.getTasks();
 
         assertEquals(1, allTasks.size());
         assertTrue(allTasks.contains(testTask));
@@ -64,14 +64,14 @@ public class TestProject {
     public void testAddTwoTasks() {
         Project testProject = new Project("Starship");
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
         Task testProject1 = new Task("Build raptor engine", 1);
         Task testProject2 = new Task("Write flight control software", 2);
         testProject.addTask(testProject1);
         testProject.addTask(testProject2);
 
-        ArrayList<Task> allTasks = testProject.getAllTasks();
+        ArrayList<Task> allTasks = testProject.getTasks();
 
         assertEquals(2, allTasks.size());
         assertTrue(allTasks.contains(testProject1));
@@ -83,14 +83,14 @@ public class TestProject {
     public void testRemoveOneTaskByReference() {
         Project testProject = new Project("Starship");
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
         Task testTask = new Task("Build raptor engine", 1);
         testProject.addTask(testTask);
 
         testProject.removeTask(testTask);
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
     }
 
@@ -98,14 +98,14 @@ public class TestProject {
     public void testRemoveOneTaskByID() {
         Project testProject = new Project("Starship");
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
         Task testTask = new Task("Build raptor engine", 1);
         testProject.addTask(testTask);
 
         testProject.removeTask(1);
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
     }
 
@@ -113,7 +113,7 @@ public class TestProject {
     public void testGetTask() {
         Project testProject = new Project("Starship");
 
-        assertEquals(0, testProject.getAllTasks().size());
+        assertEquals(0, testProject.getTasks().size());
 
         Task testTask = new Task("Build raptor engine", 1);
         testProject.addTask(testTask);
