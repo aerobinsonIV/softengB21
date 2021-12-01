@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+
+        <!-- relative path-name to access js -->
+        <script type='text/javascript' src='../js/createAndLoadProject.js'></script>
+        </script>
+    </head>
+    <!-- <body onload="initialize()"> -->
+    <body>
+    
+        <h1>Create project</h1>
+        
+        <form id="createProjectForm" method="post">
+        <input id="create-input" value="" />
+        <input type="button" value="Submit" onClick="JavaScript:handleCreateProjectClick(this)">
+        </form>
+
+        <h1>Load project</h1>
+        
+        <form id="loadProjectForm" method="post">
+        <input id="load-input" value="" />
+        <input type="button" value="Submit" onClick="JavaScript:handleLoadProjectClick(this)">
+        </form>
+
+    </body>
+</html>

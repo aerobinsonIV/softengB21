@@ -1,13 +1,14 @@
-function handleCreateProjectClick(e) {
-    var form = document.createProjectForm
-    var name = form.name.value
+function handleViewProjectRequest(e) {
+    var pathVars = location.pathname.split("/")
+    var name = pathVars[pathVars.length - 1]
 
-    // var url = "https://99.99.99.99:80/project/" + name + "/"
-    var url =
-        'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/Alpha/teammate/Test/Jimmy'
+    if (name == '') // in case url path ends with '/'
+        name = pathVars[pathVars.length - 2]
+
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/Alpha/project/'
 
     var xhr = new XMLHttpRequest()
-    xhr.open('POST', url, true)
+    xhr.open('GET', url, true)
 
     xhr.send()
 
