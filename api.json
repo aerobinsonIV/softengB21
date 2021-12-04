@@ -5,11 +5,6 @@
         "description": "API for an app to manage projects by Zach, Eli, Iv, and Jatin for CS 3733 B21",
         "version": "1.0.0"
     },
-    "servers": [
-        {
-            "url": "https://"
-        }
-    ],
     "paths": {
         "/teammate/{project_name}/{teammate_name}": {
             "post": {
@@ -132,6 +127,7 @@
                         "content": {
                             "applicaton/json": {
                                 "schema": {
+
                                     "$ref": "#/components/schemas/Project"
                                 }
                             }
@@ -837,6 +833,14 @@
                         "type": "integer",
                         "format": "int64"
                     },
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "SuccessResponse": {
+                "type": "object",
+                "properties": {
                     "message": {
                         "type": "string"
                     }
