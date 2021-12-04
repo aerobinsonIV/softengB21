@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.g.tests;
+package edu.wpi.cs3733.g.tests.entity;
 
 import edu.wpi.cs3733.g.entities.Teammate;
 import org.junit.jupiter.api.Test;
