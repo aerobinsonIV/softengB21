@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Project {
     private String _name;
-    private boolean _archived = false;
+    private boolean _isArchived = false;
     private ArrayList<Task> _tasks = new ArrayList<>();
     private ArrayList<Teammate> _team = new ArrayList<>();
 
@@ -16,12 +16,12 @@ public class Project {
         return _name;   
     }
 
-    public boolean isArchived(){
-        return _archived;
+    public boolean getIsArchived(){
+        return _isArchived;
     }
 
     public void archive(){
-        _archived = true;
+        _isArchived = true;
     }
 
     public void addTeammate(Teammate t){
@@ -72,7 +72,7 @@ public class Project {
         return null;
     }
 
-    public ArrayList<Task> getAllTasks(){
+    public ArrayList<Task> getTasks(){
         return _tasks;
     }
 }
