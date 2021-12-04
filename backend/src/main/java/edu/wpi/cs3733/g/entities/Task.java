@@ -16,23 +16,41 @@ public class Task {
         _id = id;
     }
 
+    public Task(String name) {
+        _name = name;
+    }
+
+    public Task() {}
+
     public String getName(){
         return _name;
+    }
+
+    public void setName(String name) {
+        _name = name;
     }
 
     public int getId(){
         return _id;
     }
 
-    public void setMark(TaskMarkValue newMark){
+    public void setId(int id) {
+        _id = id;
+    }
+
+    public void setMarkStatus(TaskMarkValue newMark){
         _mark = newMark;    
     }
 
-    public TaskMarkValue getMark(){
+    public TaskMarkValue getMarkStatus(){
         return _mark;
     }
 
-    public Collection<Teammate> getAssignedTeammates(){
+    public void setTeammates(ArrayList<Teammate> teamamtes) {
+        _assignedTeammates = teamamtes;
+    }
+
+    public Collection<Teammate> getTeammates(){
         return _assignedTeammates;
     }
 
