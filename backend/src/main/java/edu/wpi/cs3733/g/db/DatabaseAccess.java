@@ -91,13 +91,11 @@ public class DatabaseAccess {
 
             proj.getResultSet().last();
 
-            if(proj.getResultSet().getRow() == 0) {
+            if (proj.getResultSet().getRow() == 0) {
                 throw new Exception("Project row count was 0");
             }
 
-            if(proj.getResultSet().getInt(2) == 1) {
-                project.archive();
-            }
+            project.setArchived(proj.getResultSet().getInt(2) > 0);
 
             // TODO: Populate the project object with tasks and teammates
             /*
@@ -132,23 +130,19 @@ public class DatabaseAccess {
             results.last(); //Move cursor to last row
             int numRows = results.getRow();
 
-            if(numRows == 0) {
+            if (numRows == 0) {
                 throw new Exception("Project row count was 0");
             }
 
             ArrayList<Project> projects = new ArrayList<>();
-            for(int i = 1; i <= numRows; i ++){
+            for (int i = 1; i <= numRows; i++) {
                 results.absolute(i); // Move cursor to row i
 
                 int archived = results.getInt(2);
                 String projectName = results.getString(1);
-                
+
                 Project tempProject = new Project(projectName);
-
-                if(archived == 1){
-                    tempProject.archive();
-                }
-
+                tempProject.setArchived(archived > 0);
                 projects.add(tempProject);
             }
 
