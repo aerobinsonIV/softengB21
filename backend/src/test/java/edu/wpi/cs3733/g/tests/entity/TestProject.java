@@ -36,11 +36,11 @@ public class TestProject {
     public void testArchive() {
         Project testProject = new Project("Starship");
         assertFalse(testProject.getIsArchived());
-        testProject.archive();
+        testProject.setArchived(true);
         assertTrue(testProject.getIsArchived());
 
         //Archive shouldn't be a toggle
-        testProject.archive();
+        testProject.setArchived(true);
         assertTrue(testProject.getIsArchived());
     }
 
