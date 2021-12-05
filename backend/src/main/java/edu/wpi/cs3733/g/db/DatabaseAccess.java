@@ -8,6 +8,7 @@ import edu.wpi.cs3733.g.entities.Teammate;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 
 public class DatabaseAccess {
     public static String database_url = System.getenv("DB_URL");
@@ -30,6 +31,18 @@ public class DatabaseAccess {
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to connect to database");
+        }
+    }
+
+    public static void forceReconnectForTesting() {
+        try {
+            Class.forName("org.h2.Driver");
+            if (connection != null) {
+                connection.close();
+            }
+            connection = DriverManager.getConnection("jdbc:h2:mem:" + UUID.randomUUID().toString() + ";DB_CLOSE_ON_EXIT=TRUE");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -158,4 +171,43 @@ public class DatabaseAccess {
         }
     }
 
+    public static void initSchemaForTesting() {
+        try {
+            connect().prepareStatement("create table project\n" +
+                    "(\n" +
+                    "    name     varchar(100)   not null primary key,\n" +
+                    "    archived boolean not null default false\n" +
+                    ");\n" +
+                    "\n" +
+                    "create table task\n" +
+                    "(\n" +
+                    "    id      int                                       not null primary key auto_increment,\n" +
+                    "    name    varchar(100)                                         not null,\n" +
+                    "    parent  int                                          null,\n" +
+                    "    status  enum ('complete', 'in_progress', 'not_markable') not null default 'in_progress',\n" +
+                    "    project varchar(100)                                         not null,\n" +
+                    "    foreign key (parent) references task (id) on delete cascade on update cascade,\n" +
+                    "    foreign key (project) references project (name) on delete cascade on update cascade\n" +
+                    ");\n" +
+                    "\n" +
+                    "create table teammate\n" +
+                    "(\n" +
+                    "    name    varchar(100) not null,\n" +
+                    "    project varchar(100) not null,\n" +
+                    "    primary key (name, project),\n" +
+                    "    foreign key (project) references project (name) on delete cascade on update cascade\n" +
+                    ");\n" +
+                    "\n" +
+                    "create table task_assignments\n" +
+                    "(\n" +
+                    "    task             int  not null,\n" +
+                    "    teammate_name    varchar(100) not null,\n" +
+                    "    teammate_project varchar(100) not null,\n" +
+                    "    primary key (task, teammate_name, teammate_project),\n" +
+                    "    foreign key (task) references task (id) on delete cascade on update cascade,\n" +
+                    "    foreign key (teammate_name, teammate_project) references teammate (name, project) on delete cascade on update cascade\n" +
+                    ");\n").execute();
+        } catch (Exception ignored) {
+        }
+    }
 }
