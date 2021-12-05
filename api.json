@@ -18,7 +18,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "teammate_name",
                         "in": "path",
@@ -63,7 +63,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "teammate_name",
                         "in": "path",
@@ -110,7 +110,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "teammate_name",
                         "in": "path",
@@ -158,7 +158,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -212,7 +212,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -259,7 +259,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -318,7 +318,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -374,7 +374,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -430,7 +430,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -486,7 +486,7 @@
                         "schema": {
                             "type": "string"
                         }
-                    }, 
+                    },
                     {
                         "name": "id",
                         "in": "path",

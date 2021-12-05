@@ -40,28 +40,28 @@ public class TestTask {
     @Test
     public void testMark() {
         Task testTask = new Task("", 42);
-        assertEquals(TaskMarkValue.IN_PROGRESS, testTask.getMark());
+        assertEquals(TaskMarkValue.IN_PROGRESS, testTask.getMarkStatus());
 
-        testTask.setMark(TaskMarkValue.COMPLETE);
-        assertEquals(TaskMarkValue.COMPLETE, testTask.getMark());
+        testTask.setMarkStatus(TaskMarkValue.COMPLETE);
+        assertEquals(TaskMarkValue.COMPLETE, testTask.getMarkStatus());
 
-        testTask.setMark(TaskMarkValue.NOT_MARKABLE);
-        assertEquals(TaskMarkValue.NOT_MARKABLE, testTask.getMark());
+        testTask.setMarkStatus(TaskMarkValue.NOT_MARKABLE);
+        assertEquals(TaskMarkValue.NOT_MARKABLE, testTask.getMarkStatus());
     }
 
     @Test
     public void testMarkNull() {
         Task testTask = new Task("", 42);
 
-        testTask.setMark(null);
-        assertEquals(null, testTask.getMark());
+        testTask.setMarkStatus(null);
+        assertEquals(null, testTask.getMarkStatus());
     }
 
     @Test
     public void testAssignedTeammatesStartsEmpty() {
         Task testTask = new Task("", 42);
 
-        assertEquals(0, testTask.getAssignedTeammates().size());
+        assertEquals(0, testTask.getTeammates().size());
     }
 
     @Test
@@ -71,8 +71,8 @@ public class TestTask {
         Teammate peebo = new Teammate("Peebo", "P");
         testTask.assignTeammate(peebo);
 
-        assertEquals(1, testTask.getAssignedTeammates().size());
-        assertTrue(testTask.getAssignedTeammates().contains(peebo));
+        assertEquals(1, testTask.getTeammates().size());
+        assertTrue(testTask.getTeammates().contains(peebo));
     }
 
     @Test
@@ -85,9 +85,9 @@ public class TestTask {
         Teammate iv = new Teammate("Iv", "P");
         testTask.assignTeammate(iv);
 
-        assertEquals(2, testTask.getAssignedTeammates().size());
-        assertTrue(testTask.getAssignedTeammates().contains(peebo));
-        assertTrue(testTask.getAssignedTeammates().contains(iv));
+        assertEquals(2, testTask.getTeammates().size());
+        assertTrue(testTask.getTeammates().contains(peebo));
+        assertTrue(testTask.getTeammates().contains(iv));
     }
 
     @Test
@@ -101,9 +101,9 @@ public class TestTask {
 
         testTask.removeTeammate(peebo);
 
-        assertEquals(1, testTask.getAssignedTeammates().size());
-        assertFalse(testTask.getAssignedTeammates().contains(peebo));
-        assertTrue(testTask.getAssignedTeammates().contains(iv));
+        assertEquals(1, testTask.getTeammates().size());
+        assertFalse(testTask.getTeammates().contains(peebo));
+        assertTrue(testTask.getTeammates().contains(iv));
     }
 
     @Test
@@ -118,9 +118,9 @@ public class TestTask {
         testTask.removeTeammate(peebo);
         testTask.removeTeammate(iv);
 
-        assertEquals(0, testTask.getAssignedTeammates().size());
-        assertFalse(testTask.getAssignedTeammates().contains(peebo));
-        assertFalse(testTask.getAssignedTeammates().contains(iv));
+        assertEquals(0, testTask.getTeammates().size());
+        assertFalse(testTask.getTeammates().contains(peebo));
+        assertFalse(testTask.getTeammates().contains(iv));
     }
 
     @Test
@@ -134,9 +134,9 @@ public class TestTask {
 
         testTask.removeTeammate("Peebo");
 
-        assertEquals(1, testTask.getAssignedTeammates().size());
-        assertFalse(testTask.getAssignedTeammates().contains(peebo));
-        assertTrue(testTask.getAssignedTeammates().contains(iv));
+        assertEquals(1, testTask.getTeammates().size());
+        assertFalse(testTask.getTeammates().contains(peebo));
+        assertTrue(testTask.getTeammates().contains(iv));
     }
 
     @Test
@@ -151,9 +151,9 @@ public class TestTask {
         testTask.removeTeammate("Peebo");
         testTask.removeTeammate("Iv");
 
-        assertEquals(0, testTask.getAssignedTeammates().size());
-        assertFalse(testTask.getAssignedTeammates().contains(peebo));
-        assertFalse(testTask.getAssignedTeammates().contains(iv));
+        assertEquals(0, testTask.getTeammates().size());
+        assertFalse(testTask.getTeammates().contains(peebo));
+        assertFalse(testTask.getTeammates().contains(iv));
     }
 
     //TODO: test removing teammates that don't exist and make sure nothing happens

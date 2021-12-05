@@ -204,4 +204,40 @@ public class DatabaseAccess {
         } catch (Exception ignored) {
         }
     }
+    public static Task createTask(Project project, Task task) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("select * from project where name=?");
+
+            proj.setString(1, project.getName());
+            proj.execute();
+
+            proj.getResultSet().last();
+
+            if(proj.getResultSet().getRow() == 0) {
+                throw new Exception("Project of name " + project.getName() + " not found in database.");
+            }
+
+            PreparedStatement newTask = conn.prepareStatement("insert into task (name, project) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            newTask.setString(1, task.getName());
+            newTask.setString(2, project.getName());
+
+            newTask.execute();
+
+            // https://stackoverflow.com/questions/1915166/how-to-get-the-insert-id-in-jdbc
+            try (ResultSet generatedKeys = newTask.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    task.setId(generatedKeys.getInt(1));
+                } else {
+                    throw new Exception("Create task failed, no ID obtained.");
+                }
+            }
+
+            return task;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to create task.");
+        }
+    }
 }
