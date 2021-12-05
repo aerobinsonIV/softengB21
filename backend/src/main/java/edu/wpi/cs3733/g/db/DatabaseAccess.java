@@ -240,4 +240,19 @@ public class DatabaseAccess {
             throw new Exception("Failed to create task.");
         }
     }
+    public static boolean updateProjectArchived(Project project, boolean archived) throws Exception {
+        try {
+            PreparedStatement statement = connect().prepareStatement("update project set archived = ? where name = ?");
+
+            statement.setBoolean(1, archived);
+            statement.setString(2, project.getName());
+
+            statement.execute();
+
+            return true;
+        } catch (Exception e) {
+            throw new Exception("Failed to update project archived status!");
+        }
+    }
+
 }
