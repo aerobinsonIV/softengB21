@@ -17,7 +17,7 @@ public class ArchiveProjectController implements RequestHandler<ArchiveProjectRe
             boolean success = DatabaseAccess.updateProjectArchived(project, true);
 
             if(success) {
-                project.archive();
+                project.setArchived(true);
 
                 return project;
             } else {
