@@ -5,6 +5,8 @@ public class Teammate {
     private String name;
     private String project;
 
+    public Teammate() {}
+
     public Teammate(String name, String project) {
         this.name = name;
         this.project = project;
