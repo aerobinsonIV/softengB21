@@ -10,6 +10,7 @@ import edu.wpi.cs3733.g.requests.RemoveTeammateRequest;
 public class RemoveTeammateController implements RequestHandler<RemoveTeammateRequest, Project> {
     @Override
     public Project handleRequest(RemoveTeammateRequest input, Context context) {
+        System.out.println("RemoveTeammateController handleRequest called with name " + input.getName() + ", projectName " + input.getProjectName());
         try {
             Project project = new Project(input.getProjectName());
             if (DatabaseAccess.removeTeammate(new Teammate(input.getName(), input.getProjectName()))) {
