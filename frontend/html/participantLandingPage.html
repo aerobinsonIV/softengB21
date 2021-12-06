@@ -19,22 +19,38 @@
     </style>
     <body>
         <h1 id="create-header">Create project</h1>
-        
         <form id="create-project-form" method="post">
             <input id="create-input" value="" />
             <input type="button" value="Submit" onClick="JavaScript:handleCreateProjectClick(this)">
         </form>
 
         <h1 id="load-header">Load project</h1>
-        
         <form id="load-project-form" method="post">
             <input id="load-input" value="" />
             <input type="button" value="Submit" onClick="JavaScript:handleLoadProjectClick(this)">
         </form>
 
         <button type="button" id="landing-btn" class="hidden" onClick="JavaScript:renderLandingPage()">Back To Landing Page</button>
-        <button type="button" id="new-task-btn" class="hidden">New Task</button>
 
+        <h1 id="add-task-header" class="hidden">Add Task</h1>
+        <form id="add-task-form" method="post" class="hidden">
+            <input id="add-task" value="" />
+            <input type="button" value="Submit" onClick="">
+        </form>
+
+        <h1 id="add-teammate-header" class="hidden">Add Teammate</h1>
+        <form id="add-teammate-form" method="post" class="hidden">
+            <input id="load-input" value="" />
+            <input type="button" value="Submit" onClick="">
+        </form>
+
+        <h1 id="remove-teammate-header" class="hidden">Remove Teammate</h1>
+        <form id="remove-teammate-form" method="post" class="hidden">
+            <input id="load-input" value="" />
+            <input type="button" value="Submit" onClick="">
+        </form>
+
+        <h1 id="tasks-header" class="hidden">Tasks:</h1>
         <div id="task-view" class="hidden"> 
             <div id="1" class="padded">Example Task 1</div>
             <div id="2" class="padded">Example Task 2</div>
