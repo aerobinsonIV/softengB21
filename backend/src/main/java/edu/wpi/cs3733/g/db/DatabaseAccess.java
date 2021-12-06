@@ -157,6 +157,7 @@ public class DatabaseAccess {
     }
 
     public static boolean deleteProject(Project project) throws Exception {
+        System.out.println("In deleteProject");
         try {
             PreparedStatement statement = connect().prepareStatement("delete from project where name = ?;");
             statement.setString(1, project.getName());
