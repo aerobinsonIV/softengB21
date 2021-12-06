@@ -4,7 +4,7 @@ function handleCreateProjectClick(e) {
     if (name == '') {
         alert('Please input a name into the box below \'Create Project\'')
     } else {
-        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/Alpha/project/'
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/'
 
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url + name, true)
@@ -35,7 +35,7 @@ function handleLoadProjectClick(e) {
     if (name == '') {
         alert('Please input a name into the box below \'Load Project\'')
     } else {
-        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/Alpha/project/'
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/'
 
         var xhr = new XMLHttpRequest()
         xhr.open('GET', url + name, true)
