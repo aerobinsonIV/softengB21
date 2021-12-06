@@ -12,10 +12,8 @@ public class GetProjectController implements RequestHandler<GetProjectRequest, P
     @Override
     public Project handleRequest(GetProjectRequest req, Context context) {
 
-        Project project = new Project(req.getName());
-
         try {
-            Project db_project = DatabaseAccess.getProject(project);
+            Project db_project = DatabaseAccess.getProject(req.getName());
 
             return db_project;
         } catch (Exception e) {

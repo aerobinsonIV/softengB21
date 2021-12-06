@@ -31,7 +31,7 @@ public class DeleteProjectController implements RequestHandler<DeleteProjectData
         System.out.println("DeleteProjectData handleRequest called with project name " + input.getName());
 
         try {
-            Project projectToDelete = DatabaseAccess.getProject(new Project(input.name));
+            Project projectToDelete = DatabaseAccess.getProject(input.getName());
             System.out.println("project gotten");
             
             if (DatabaseAccess.deleteProject(new Project(input.name))) {

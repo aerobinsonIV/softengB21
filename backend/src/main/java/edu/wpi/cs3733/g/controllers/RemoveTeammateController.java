@@ -12,9 +12,8 @@ public class RemoveTeammateController implements RequestHandler<RemoveTeammateRe
     public Project handleRequest(RemoveTeammateRequest input, Context context) {
         System.out.println("RemoveTeammateController handleRequest called with name " + input.getName() + ", projectName " + input.getProjectName());
         try {
-            Project project = new Project(input.getProjectName());
             if (DatabaseAccess.removeTeammate(new Teammate(input.getName(), input.getProjectName()))) {
-                return DatabaseAccess.getProject(project);
+                return DatabaseAccess.getProject(input.getProjectName());
             }
         } catch (Exception ignored) {
         }

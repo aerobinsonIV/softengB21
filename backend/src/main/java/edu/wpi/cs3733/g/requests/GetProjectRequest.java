@@ -11,8 +11,8 @@ public class GetProjectRequest {
         this.name = name;
     }
 
-    public GetProjectRequest(String project_name) {
-        this.name = project_name;
+    public GetProjectRequest(String name) {
+        this.name = name;
     }
 
     public GetProjectRequest() {}
