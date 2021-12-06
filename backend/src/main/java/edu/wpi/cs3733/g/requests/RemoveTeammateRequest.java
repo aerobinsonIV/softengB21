@@ -24,4 +24,6 @@ public class RemoveTeammateRequest {
         this.name = name;
         this.projectName = projectName;
     }
+
+    public RemoveTeammateRequest() {}
 }

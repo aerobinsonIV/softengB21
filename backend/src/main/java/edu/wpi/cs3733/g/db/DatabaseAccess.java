@@ -1,14 +1,16 @@
 package edu.wpi.cs3733.g.db;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.UUID;
+
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
-import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
 
 public class DatabaseAccess {
     public static String database_url = System.getenv("DB_URL");

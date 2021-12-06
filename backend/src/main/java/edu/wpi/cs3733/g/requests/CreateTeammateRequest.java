@@ -19,4 +19,11 @@ public class CreateTeammateRequest {
     public String getProjectName(){
         return projectName;
     }
+
+    public CreateTeammateRequest(String name, String projectName){
+        this.name = name;
+        this.projectName = projectName;
+    }
+
+    public CreateTeammateRequest(){}
 }
