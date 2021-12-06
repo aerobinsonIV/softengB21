@@ -76,7 +76,6 @@ public class DatabaseAccess {
         try {
             PreparedStatement statement = connect().prepareStatement("insert into project values (?, 0);");
             statement.setString(1, project.getName());
-            System.out.println(statement.toString());
             statement.execute();
             return true;
         } catch (Exception e) {
@@ -91,20 +90,14 @@ public class DatabaseAccess {
         PreparedStatement teamPS = connect().prepareStatement("select * from teammate where project=\"" + projectName + "\"");
         ResultSet rs = teamPS.executeQuery();
 
-        System.out.println("Here1, " + projectName);
-
         //Loop through all teammates in this project
         while(rs.next()){
             project.addTeammate(new Teammate(rs.getString("name"), projectName));
         }
 
-        System.out.println("Here2, " + projectName);
-
         //Get task assignments for this project
         PreparedStatement taskAssignmentPS = connect().prepareStatement("select * from task_assignments where teammate_project=\"" + projectName + "\"");
-        System.out.println("Here3, " + projectName);
         rs = taskAssignmentPS.executeQuery();
-        System.out.println("Here4, " + projectName);
 
         // TODO: There's probably a prettier way to implement this
         ArrayList<Integer> assignedTaskIds = new ArrayList<>();
@@ -116,13 +109,10 @@ public class DatabaseAccess {
             assignedTaskTeammateNames.add(rs.getString("teammate_name"));
         }
 
-        System.out.println("Here5, " + projectName);
-
         //Get tasks for this project
         PreparedStatement taskPS = connect().prepareStatement("select * from task where project=\"" + projectName + "\"");
         rs = taskPS.executeQuery();
 
-        System.out.println("Here6, " + projectName);
         //Loop through tasks
         while(rs.next()){
             Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
@@ -189,7 +179,6 @@ public class DatabaseAccess {
     }
 
     public static boolean deleteProject(Project project) throws Exception {
-        System.out.println("In deleteProject");
         try {
             PreparedStatement statement = connect().prepareStatement("delete from project where name = ?;");
             statement.setString(1, project.getName());

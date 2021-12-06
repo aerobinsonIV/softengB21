@@ -28,14 +28,10 @@ public class DeleteProjectController implements RequestHandler<DeleteProjectData
     @Override
     public Project handleRequest(DeleteProjectData input, Context context) {
 
-        System.out.println("DeleteProjectData handleRequest called with project name " + input.getName());
-
         try {
             Project projectToDelete = DatabaseAccess.getProject(input.getName());
-            System.out.println("project gotten");
             
             if (DatabaseAccess.deleteProject(new Project(input.name))) {
-                System.out.println("project deleted");
                 return projectToDelete;
             }
         } catch (Exception ignored) {

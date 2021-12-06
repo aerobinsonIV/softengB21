@@ -16,7 +16,6 @@ public class GetAllProjectsController implements RequestHandler<GetAllProjectsRe
 
     @Override
     public GetAllProjectsResponse handleRequest(GetAllProjectsRequest req, Context context) {
-        System.out.println("In lambda for GetAllProjectsController");
         try {
             ArrayList<Project> allProjects = DatabaseAccess.getAllProjects();
 
