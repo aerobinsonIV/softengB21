@@ -35,12 +35,12 @@ function renderProjects(projects) {
 }
 
 function deleteProject() {
-    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/'
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/delete/'
 
     var name = document.getElementById("delete-input").value
 
     var xhr = new XMLHttpRequest()
-    xhr.open('DELETE', url + name, true)
+    xhr.open('POST', url + name, true)
 
     xhr.send()
 
