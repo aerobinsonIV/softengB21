@@ -1,4 +1,4 @@
-function handleCreateProjectClick(e) {
+function createProject() {
     var name = document.getElementById("create-input").value
 
     if (name == '') {
@@ -29,9 +29,13 @@ function handleCreateProjectClick(e) {
     }
 }
 
-function handleLoadProjectClick(e) {
+function loadProject() {
     var name = document.getElementById("load-input").value
 
+    loadProjectWithName(name)
+}
+
+function loadProjectWithName(name) {
     if (name == '') {
         alert('Please input a name into the box below \'Load Project\'')
     } else {
@@ -76,6 +80,54 @@ function renderProject(response) {
 
     document.getElementById("create-project-form").setAttribute("class", "hidden")
     document.getElementById("load-project-form").setAttribute("class", "hidden")
+
+    renderTasks(response)
+    renderTeammates(response)
+}
+
+function renderTasks(response) {
+    var divStr = ""
+
+    var tasks = response["tasks"]
+
+    console.log(tasks.length)
+
+    for (var index in tasks) {
+        divStr += "<div class=\"padded\">"
+
+        divStr += "name: " + tasks[index].name + "<br>"
+        divStr += "id: " + tasks[index].id + "<br>"
+        divStr += "status: " + tasks[index].markStatus + "<br>"
+
+        divStr += "Assigned teamates: "
+        if (tasks[index].teammates.length == 0) {
+            divStr += "None"
+        } else {
+            for (var tmIndex in tasks[index].teammates) {
+                divStr += "<br><p style=\"text-indent: 20px\">" + tasks[index].teammates[tmIndex].name + "</p>"
+            }
+        }
+
+        divStr += "</div>"
+    }
+
+    document.getElementById("task-view").innerHTML = divStr;
+}
+
+function renderTeammates(response) {
+    var divStr = ""
+
+    var teammates = response["team"]
+
+    console.log(teammates.length)
+
+    for (var index in teammates) {
+        divStr += "<div>"
+        divStr += teammates[index].name + "<br>"
+        divStr += "</div>"
+    }
+
+    document.getElementById("teammate-view").innerHTML = divStr;
 }
 
 function renderLandingPage() {
