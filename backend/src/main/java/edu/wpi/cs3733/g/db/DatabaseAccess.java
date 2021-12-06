@@ -83,60 +83,77 @@ public class DatabaseAccess {
         }
     }
 
+    private static void populateProjectTasksAndTeammates(Project project) throws Exception{
+        String projectName = project.getName();
+        //Get team members for this project
+        PreparedStatement teamPS = connect().prepareStatement("select * from teammate where project=\"" + projectName + "\"");
+        ResultSet rs = teamPS.executeQuery();
+
+        System.out.println("Here1, " + projectName);
+
+        //Loop through all teammates in this project
+        while(rs.next()){
+            project.addTeammate(new Teammate(rs.getString("name"), projectName));
+        }
+
+        System.out.println("Here2, " + projectName);
+
+        //Get task assignments for this project
+        PreparedStatement taskAssignmentPS = connect().prepareStatement("select * from task_assignments where teammate_project=\"" + projectName + "\"");
+        System.out.println("Here3, " + projectName);
+        rs = taskAssignmentPS.executeQuery();
+        System.out.println("Here4, " + projectName);
+
+        // TODO: There's probably a prettier way to implement this
+        ArrayList<Integer> assignedTaskIds = new ArrayList<>();
+        ArrayList<String> assignedTaskTeammateNames = new ArrayList<>();
+
+        //Loop through, populate task assignment ArrayLists
+        while(rs.next()){
+            assignedTaskIds.add(rs.getInt("task"));
+            assignedTaskTeammateNames.add(rs.getString("teammate_name"));
+        }
+
+        System.out.println("Here5, " + projectName);
+
+        //Get tasks for this project
+        PreparedStatement taskPS = connect().prepareStatement("select * from task where project=\"" + projectName + "\"");
+        rs = taskPS.executeQuery();
+
+        System.out.println("Here6, " + projectName);
+        //Loop through tasks
+        while(rs.next()){
+            Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
+
+            for(int i = 0; i < assignedTaskIds.size(); i ++){
+                if(assignedTaskIds.get(i) == tempTask.getId()){
+                    //We found a task assignment that applies to this task, add this teammate
+                    tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
+                }
+            }
+
+            project.addTask(tempTask);
+        }
+
+        // TODO: Add logic here for dealing with task children
+    }
+
     public static Project getProject(String projectName) throws Exception {
         try {
 
             //Get project with specified name (only for archive status)
-            PreparedStatement projectPS = connect().prepareStatement("select * from project where name=\"" + projectName + "\"");
+            PreparedStatement projectPS = connect().prepareStatement("select * from project where name = ?");
+
+            projectPS.setString(1, projectName);
+            
             ResultSet rs = projectPS.executeQuery();
             
             rs.next();
 
             Project project = new Project(projectName);
             project.setArchived(rs.getInt("archived") > 0);
-            
-            //Get team members for this project
-            PreparedStatement teamPS = connect().prepareStatement("select * from teammate where project=\"" + projectName + "\"");
-            rs = teamPS.executeQuery();
 
-            //Loop through all teammates in this project
-            while(rs.next()){
-                project.addTeammate(new Teammate(rs.getString("name"), projectName));
-            }
-
-            //Get task assignments for this project
-            PreparedStatement taskAssignmentPS = connect().prepareStatement("select * from task_assignments where teammate_project=\"" + projectName + "\"");
-            rs = taskAssignmentPS.executeQuery();
-
-            // TODO: There's probably a prettier way to implement this
-            ArrayList<Integer> assignedTaskIds = new ArrayList<>();
-            ArrayList<String> assignedTaskTeammateNames = new ArrayList<>();
-
-            //Loop through, populate task assignment ArrayLists
-            while(rs.next()){
-                assignedTaskIds.add(rs.getInt("task"));
-                assignedTaskTeammateNames.add(rs.getString("teammate_name"));
-            }
-
-            //Get tasks for this project
-            PreparedStatement taskPS = connect().prepareStatement("select * from task where project=\"" + projectName + "\"");
-            rs = taskPS.executeQuery();
-
-            //Loop through tasks
-            while(rs.next()){
-                Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
-
-                for(int i = 0; i < assignedTaskIds.size(); i ++){
-                    if(assignedTaskIds.get(i) == tempTask.getId()){
-                        //We found a task assignment that applies to this task, add this teammate
-                        tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
-                    }
-                }
-
-                project.addTask(tempTask);
-            }
-
-            // TODO: Add logic here for dealing with task children
+            populateProjectTasksAndTeammates(project);
 
             return project;
         } catch (Exception e) {
@@ -147,31 +164,22 @@ public class DatabaseAccess {
 
     public static ArrayList<Project> getAllProjects() throws Exception {
         try {
-            PreparedStatement proj = connect().prepareStatement("select * from project");
-            proj.execute();
 
-            ResultSet results = proj.getResultSet();
-            results.last(); //Move cursor to last row
-            int numRows = results.getRow();
-
-            if (numRows == 0) {
-                throw new Exception("Project row count was 0");
-            }
-
+            //Get project with specified name (only for archive status)
+            PreparedStatement projectPS = connect().prepareStatement("select * from project");            
+            ResultSet rs = projectPS.executeQuery();
+            
             ArrayList<Project> projects = new ArrayList<>();
-            for (int i = 1; i <= numRows; i++) {
-                results.absolute(i); // Move cursor to row i
 
-                int archived = results.getInt(2);
-                String projectName = results.getString(1);
+            while(rs.next()){
+                Project project = new Project(rs.getString("name"));
+                project.setArchived(rs.getInt("archived") > 0);
+                populateProjectTasksAndTeammates(project);
+                projects.add(project);
 
-                Project tempProject = new Project(projectName);
-                tempProject.setArchived(archived > 0);
-                projects.add(tempProject);
             }
 
             return projects;
-
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to get all the projects!");
