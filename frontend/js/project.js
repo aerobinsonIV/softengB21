@@ -60,3 +60,34 @@ function addTeammate() {
         }
     }
 }
+
+function deleteTeammate() {
+    var projectHeader = document.getElementById("create-header").innerHTML
+    var projectName = projectHeader.substr(projectHeader.indexOf(" ") + 1)
+    var teammateName = document.getElementById("add-teammate-input").value
+
+    if (teammateName == '') {
+        alert('Please input a name into the box below \'Remove Teammate\'')
+    } else {
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/teammate/delete/' + projectName + "/"
+
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', url + teammateName, true)
+
+        xhr.send()
+
+        xhr.onloadend = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                console.log(xhr.responseText)
+
+                if (xhr.responseText == null || xhr.responseText == "null") {
+                    alert('Teammate with name ' + teammateName + ' does not exists.')
+                } else {
+                    loadProjectWithName(projectName)
+                }
+            } else {
+                alert('Something went wrong')
+            }
+        }
+    }
+}
