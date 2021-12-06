@@ -64,7 +64,7 @@ function addTeammate() {
 function deleteTeammate() {
     var projectHeader = document.getElementById("create-header").innerHTML
     var projectName = projectHeader.substr(projectHeader.indexOf(" ") + 1)
-    var teammateName = document.getElementById("add-teammate-input").value
+    var teammateName = document.getElementById("remove-teammate-input").value
 
     if (teammateName == '') {
         alert('Please input a name into the box below \'Remove Teammate\'')
