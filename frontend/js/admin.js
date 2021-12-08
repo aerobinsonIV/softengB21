@@ -1,5 +1,5 @@
 function loadProjects() {
-    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/Alpha/project/'
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/'
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
@@ -32,4 +32,30 @@ function renderProjects(projects) {
     }
 
     document.getElementById("projects-list").innerHTML = innerHTMLStr
+}
+
+function deleteProject() {
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/delete/'
+
+    var name = document.getElementById("delete-input").value
+
+    var xhr = new XMLHttpRequest()
+    xhr.open('POST', url + name, true)
+
+    xhr.send()
+
+    xhr.onloadend = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            console.log(xhr.responseText)
+            var jsonResponse = JSON.parse(xhr.responseText)
+
+            if (jsonResponse["message"] != undefined) { // message is from the ErrorResponse schema
+                alert('Could not delete project ' + name + ': ' + jsonResponse["message"])
+            } else {
+                loadProjects()
+            }
+        } else {
+            alert('Something went wrong.')
+        }
+    }
 }
