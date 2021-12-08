@@ -2,7 +2,6 @@ package edu.wpi.cs3733.g.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public class Task {
     private String _name;

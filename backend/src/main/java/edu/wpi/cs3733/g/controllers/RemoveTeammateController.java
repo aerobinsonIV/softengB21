@@ -10,9 +10,8 @@ public class RemoveTeammateController implements RequestHandler<Teammate, Projec
     @Override
     public Project handleRequest(Teammate input, Context context) {
         try {
-            Project project = new Project(input.getProject());
             if (DatabaseAccess.removeTeammate(input)) {
-                return DatabaseAccess.getProject(project);
+                return DatabaseAccess.getProject(input.getProjectName());
             }
         } catch (Exception ignored) {
         }
