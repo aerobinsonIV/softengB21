@@ -5,12 +5,14 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Teammate;
+import edu.wpi.cs3733.g.requests.RemoveTeammateRequest;
 
-public class RemoveTeammateController implements RequestHandler<Teammate, Project> {
+public class RemoveTeammateController implements RequestHandler<RemoveTeammateRequest, Project> {
     @Override
-    public Project handleRequest(Teammate input, Context context) {
+    public Project handleRequest(RemoveTeammateRequest input, Context context) {
+        System.out.println("RemoveTeammateController handleRequest called with name " + input.getName() + ", projectName " + input.getProjectName());
         try {
-            if (DatabaseAccess.removeTeammate(input)) {
+            if (DatabaseAccess.removeTeammate(new Teammate(input.getName(), input.getProjectName()))) {
                 return DatabaseAccess.getProject(input.getProjectName());
             }
         } catch (Exception ignored) {

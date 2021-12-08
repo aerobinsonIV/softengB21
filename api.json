@@ -98,7 +98,7 @@
                 }
             }
         },
-        "/teammate/delete/{project_name}/{id}": {
+        "/teammate/delete/{project_name}/{teammate_name}": {
             "post": {
                 "description": "Deletes the teammate in `project_name` project with name `teammate_name`.",
                 "parameters": [

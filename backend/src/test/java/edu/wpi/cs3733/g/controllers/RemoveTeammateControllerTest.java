@@ -3,6 +3,8 @@ package edu.wpi.cs3733.g.controllers;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Teammate;
+import edu.wpi.cs3733.g.requests.RemoveTeammateRequest;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +14,13 @@ public class RemoveTeammateControllerTest extends BaseControllerTest {
         DatabaseAccess.createProject(new Project("P1"));
         DatabaseAccess.createProject(new Project("P2"));
 
-        Teammate t1 = new Teammate("A", "P1");
-        Teammate t2 = new Teammate("B", "P1");
-        Teammate t3 = new Teammate("A", "P2");
+        RemoveTeammateRequest t1 = new RemoveTeammateRequest("A", "P1");
+        RemoveTeammateRequest t2 = new RemoveTeammateRequest("B", "P1");
+        RemoveTeammateRequest t3 = new RemoveTeammateRequest("A", "P2");
 
-        DatabaseAccess.createTeammate(t1);
-        DatabaseAccess.createTeammate(t2);
-        DatabaseAccess.createTeammate(t3);
+        DatabaseAccess.createTeammate(new Teammate(t1.getName(), t1.getProjectName()));
+        DatabaseAccess.createTeammate(new Teammate(t2.getName(), t2.getProjectName()));
+        DatabaseAccess.createTeammate(new Teammate(t3.getName(), t3.getProjectName()));
 
         RemoveTeammateController controller = new RemoveTeammateController();
 

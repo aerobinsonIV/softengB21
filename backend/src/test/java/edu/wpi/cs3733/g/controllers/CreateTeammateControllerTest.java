@@ -2,7 +2,8 @@ package edu.wpi.cs3733.g.controllers;
 
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
-import edu.wpi.cs3733.g.entities.Teammate;
+import edu.wpi.cs3733.g.requests.CreateTeammateRequest;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,9 +13,9 @@ public class CreateTeammateControllerTest extends BaseControllerTest {
         DatabaseAccess.createProject(new Project("P1"));
         DatabaseAccess.createProject(new Project("P2"));
 
-        Teammate t1 = new Teammate("A", "P1");
-        Teammate t2 = new Teammate("B", "P1");
-        Teammate t3 = new Teammate("A", "P2");
+        CreateTeammateRequest t1 = new CreateTeammateRequest("A", "P1");
+        CreateTeammateRequest t2 = new CreateTeammateRequest("B", "P1");
+        CreateTeammateRequest t3 = new CreateTeammateRequest("A", "P2");
 
         CreateTeammateController controller = new CreateTeammateController();
 
