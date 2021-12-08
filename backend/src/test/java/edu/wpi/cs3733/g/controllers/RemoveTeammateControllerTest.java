@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 public class RemoveTeammateControllerTest extends BaseControllerTest {
     @Test
     void test() throws Exception {
-        DatabaseAccess.createProject(new Project("P1"));
-        DatabaseAccess.createProject(new Project("P2"));
+        DatabaseAccess.createProject("P1");
+        DatabaseAccess.createProject("P2");
 
         RemoveTeammateRequest t1 = new RemoveTeammateRequest("A", "P1");
         RemoveTeammateRequest t2 = new RemoveTeammateRequest("B", "P1");
@@ -24,8 +24,8 @@ public class RemoveTeammateControllerTest extends BaseControllerTest {
 
         RemoveTeammateController controller = new RemoveTeammateController();
 
-        // Assertions.assertNotNull(controller.handleRequest(t1, null));
-        // Assertions.assertNotNull(controller.handleRequest(t2, null));
-        // Assertions.assertNotNull(controller.handleRequest(t3, null));
+        Assertions.assertNotNull(controller.handleRequest(t1, null));
+        Assertions.assertNotNull(controller.handleRequest(t2, null));
+        Assertions.assertNotNull(controller.handleRequest(t3, null));
     }
 }
