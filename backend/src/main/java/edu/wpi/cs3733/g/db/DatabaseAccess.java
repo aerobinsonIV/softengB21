@@ -84,19 +84,21 @@ public class DatabaseAccess {
         }
     }
 
-    private static void populateProjectTasksAndTeammates(Project project) throws Exception{
+    private static void populateProjectTasksAndTeammates(Project project) throws Exception {
         String projectName = project.getName();
         //Get team members for this project
-        PreparedStatement teamPS = connect().prepareStatement("select * from teammate where project=\"" + projectName + "\"");
+        PreparedStatement teamPS = connect().prepareStatement("select * from teammate where project = ?;");
+        teamPS.setString(1, projectName);
         ResultSet rs = teamPS.executeQuery();
 
         //Loop through all teammates in this project
-        while(rs.next()){
+        while (rs.next()) {
             project.addTeammate(new Teammate(rs.getString("name"), projectName));
         }
 
         //Get task assignments for this project
-        PreparedStatement taskAssignmentPS = connect().prepareStatement("select * from task_assignments where teammate_project=\"" + projectName + "\"");
+        PreparedStatement taskAssignmentPS = connect().prepareStatement("select * from task_assignments where teammate_project = ?;");
+        taskAssignmentPS.setString(1, projectName);
         rs = taskAssignmentPS.executeQuery();
 
         // TODO: There's probably a prettier way to implement this
@@ -104,21 +106,22 @@ public class DatabaseAccess {
         ArrayList<String> assignedTaskTeammateNames = new ArrayList<>();
 
         //Loop through, populate task assignment ArrayLists
-        while(rs.next()){
+        while (rs.next()) {
             assignedTaskIds.add(rs.getInt("task"));
             assignedTaskTeammateNames.add(rs.getString("teammate_name"));
         }
 
         //Get tasks for this project
-        PreparedStatement taskPS = connect().prepareStatement("select * from task where project=\"" + projectName + "\"");
+        PreparedStatement taskPS = connect().prepareStatement("select * from task where project = ?;");
+        taskPS.setString(1, projectName);
         rs = taskPS.executeQuery();
 
         //Loop through tasks
-        while(rs.next()){
+        while (rs.next()) {
             Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
 
-            for(int i = 0; i < assignedTaskIds.size(); i ++){
-                if(assignedTaskIds.get(i) == tempTask.getId()){
+            for (int i = 0; i < assignedTaskIds.size(); i++) {
+                if (assignedTaskIds.get(i) == tempTask.getId()) {
                     //We found a task assignment that applies to this task, add this teammate
                     tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
                 }
@@ -137,9 +140,9 @@ public class DatabaseAccess {
             PreparedStatement projectPS = connect().prepareStatement("select * from project where name = ?");
 
             projectPS.setString(1, projectName);
-            
+
             ResultSet rs = projectPS.executeQuery();
-            
+
             rs.next();
 
             Project project = new Project(projectName);
@@ -158,12 +161,12 @@ public class DatabaseAccess {
         try {
 
             //Get project with specified name (only for archive status)
-            PreparedStatement projectPS = connect().prepareStatement("select * from project");            
+            PreparedStatement projectPS = connect().prepareStatement("select * from project");
             ResultSet rs = projectPS.executeQuery();
-            
+
             ArrayList<Project> projects = new ArrayList<>();
 
-            while(rs.next()){
+            while (rs.next()) {
                 Project project = new Project(rs.getString("name"));
                 project.setArchived(rs.getInt("archived") > 0);
                 populateProjectTasksAndTeammates(project);
@@ -228,6 +231,7 @@ public class DatabaseAccess {
         } catch (Exception ignored) {
         }
     }
+
     public static Task createTask(Project project, Task task) throws Exception {
         try {
             Connection conn = DatabaseAccess.connect();
@@ -239,7 +243,7 @@ public class DatabaseAccess {
 
             proj.getResultSet().last();
 
-            if(proj.getResultSet().getRow() == 0) {
+            if (proj.getResultSet().getRow() == 0) {
                 throw new Exception("Project of name " + project.getName() + " not found in database.");
             }
 
@@ -264,6 +268,7 @@ public class DatabaseAccess {
             throw new Exception("Failed to create task.");
         }
     }
+
     public static boolean updateProjectArchived(Project project, boolean archived) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("update project set archived = ? where name = ?");
