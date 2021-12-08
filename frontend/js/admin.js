@@ -1,5 +1,5 @@
 function loadProjects() {
-    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/'
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/project/'
 
     var xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
@@ -35,7 +35,7 @@ function renderProjects(projects) {
 }
 
 function deleteProject() {
-    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/project/delete/'
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/project/delete/'
 
     var name = document.getElementById("delete-input").value
 
@@ -49,13 +49,40 @@ function deleteProject() {
             console.log(xhr.responseText)
             var jsonResponse = JSON.parse(xhr.responseText)
 
-            if (jsonResponse["message"] != undefined) { // message is from the ErrorResponse schema
-                alert('Could not delete project ' + name + ': ' + jsonResponse["message"])
+            if (xhr.responseText == null || xhr.responseText == "null") {
+                alert('Could not delete project ' + name + '.')
             } else {
                 loadProjects()
             }
         } else {
             alert('Something went wrong.')
+        }
+    }
+}
+
+function archiveProject() {
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/project/archive/'
+
+    var projectName = document.getElementById("archive-input").value
+
+    var xhr = new XMLHttpRequest()
+    xhr.open("POST", url + projectName, true)
+
+    xhr.send()
+
+    xhr.onloadend = () => {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            console.log(xhr.responseText)
+
+            var jsonResponse = JSON.parse(xhr.responseText)
+
+            if (xhr.responseText == null || xhr.responseText == "null") {
+                alert("Could not archive project " + projectName + ".")
+            } else {
+                loadProjects()
+            }
+        } else {
+            alert("Something went wrong.")
         }
     }
 }

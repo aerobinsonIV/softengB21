@@ -6,7 +6,7 @@ function addTask() {
     if (taskName == '') {
         alert('Please input a name into the box below \'Add Task\'')
     } else {
-        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/task/' + projectName + "/"
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/task/' + projectName + "/"
 
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url + taskName, true)
@@ -38,7 +38,7 @@ function addTeammate() {
     if (teammateName == '') {
         alert('Please input a name into the box below \'Add Teammate\'')
     } else {
-        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/teammate/' + projectName + "/"
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/teammate/' + projectName + "/"
 
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url + teammateName, true)
@@ -69,7 +69,7 @@ function deleteTeammate() {
     if (teammateName == '') {
         alert('Please input a name into the box below \'Remove Teammate\'')
     } else {
-        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/G3/teammate/delete/' + projectName + "/"
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/teammate/delete/' + projectName + "/"
 
         var xhr = new XMLHttpRequest()
         xhr.open('POST', url + teammateName, true)

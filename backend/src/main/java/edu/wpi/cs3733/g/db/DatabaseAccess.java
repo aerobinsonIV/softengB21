@@ -278,7 +278,8 @@ public class DatabaseAccess {
 
             statement.execute();
 
-            return true;
+            // Ensure that we actually found a project to archive.
+            return statement.getUpdateCount() > 0;
         } catch (Exception e) {
             throw new Exception("Failed to update project archived status!");
         }
