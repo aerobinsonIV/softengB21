@@ -236,10 +236,12 @@ public class DatabaseAccess {
         try {
             Connection conn = DatabaseAccess.connect();
 
-            PreparedStatement proj = conn.prepareStatement("select * from project where name=?");
+            PreparedStatement proj = conn.prepareStatement("select * from project where name=?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
             proj.setString(1, project.getName());
+            System.out.println("Before createTask exec");
             proj.execute();
+            System.out.println("After createTask exec");
 
             proj.getResultSet().last();
 
