@@ -24,12 +24,15 @@ class DeleteProjectData {
     }
 }
 
-public class DeleteProjectController implements RequestHandler<DeleteProjectData, DeleteProjectData> {
+public class DeleteProjectController implements RequestHandler<DeleteProjectData, Project> {
     @Override
-    public DeleteProjectData handleRequest(DeleteProjectData input, Context context) {
+    public Project handleRequest(DeleteProjectData input, Context context) {
+
         try {
+            Project projectToDelete = DatabaseAccess.getProject(input.getName());
+            
             if (DatabaseAccess.deleteProject(new Project(input.name))) {
-                return input;
+                return projectToDelete;
             }
         } catch (Exception ignored) {
         }
