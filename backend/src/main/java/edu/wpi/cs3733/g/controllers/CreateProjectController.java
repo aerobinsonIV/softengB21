@@ -23,9 +23,9 @@ public class CreateProjectController implements RequestHandler<CreateProjectRequ
             System.out.println("Failure");
             e.printStackTrace();
             // TODO: Swap to some sort of GenericErrorResponse
-            return new CreateProjectResponse(null);
+            return null;
         }
 
-        return new CreateProjectResponse(null);
+        return null;
     }
 }
