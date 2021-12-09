@@ -24,7 +24,6 @@ public class MarkTaskController implements RequestHandler<MarkTaskRequest, Gener
             if (!project.getTask(input.getID()).isLeafTask())
                 return new GenericResponse(400, "Cannot change mark status of task with subtasks");
 
-            System.out.println(newStatus.toUpperCase());
             if (DatabaseAccess.markTask(input.getID(), TaskMarkValue.valueOf(newStatus.toUpperCase())))
                 return new GenericResponse(200, "Task successfully marked");
 

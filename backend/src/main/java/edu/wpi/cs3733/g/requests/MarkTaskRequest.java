@@ -29,7 +29,7 @@ public class MarkTaskRequest {
 
     @Override
     public String toString() {
-        return "CreateTaskRequest{" +
+        return "MarkTaskRequest{" +
                 "id='" + id + '\'' +
                 "new_status='" + newStatus + "\''" + '}';
     }

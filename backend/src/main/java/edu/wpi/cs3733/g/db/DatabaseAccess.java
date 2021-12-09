@@ -318,6 +318,21 @@ public class DatabaseAccess {
         }
     }
 
+    public static void setTaskParent(int parentID, int childID) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set parent = ? where id = ?");
+
+            proj.setInt(1, parentID);
+            proj.setInt(2, childID);
+            proj.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to set parent task.");
+        }
+    }
+
     public static Project findProjectWithTask(int id) throws Exception {
         try {
             PreparedStatement task = connect().prepareStatement("select * from task where id = ?");
@@ -327,6 +342,21 @@ public class DatabaseAccess {
             String projectName = rs.getString("project");
 
             return DatabaseAccess.getProject(projectName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to find project");
+        }
+    }
+
+    public static int getParent(int childID) throws Exception {
+        try {
+            PreparedStatement task = connect().prepareStatement("select parent from task where id = ?");
+            task.setInt(1, childID);
+            ResultSet rs = task.executeQuery();
+            rs.next();
+            int parentID = rs.getInt("parent");
+
+            return parentID;
         } catch (Exception e) {
             e.printStackTrace();
             throw new Exception("Failed to find project");

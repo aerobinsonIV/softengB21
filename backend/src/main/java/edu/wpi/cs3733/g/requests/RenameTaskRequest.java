@@ -29,7 +29,7 @@ public class RenameTaskRequest {
 
     @Override
     public String toString() {
-        return "CreateTaskRequest{" +
+        return "RenameTaskRequest{" +
                 "id='" + id + '\'' +
                 "new_name='" + newName + "\''" + '}';
     }
