@@ -271,6 +271,35 @@ public class DatabaseAccess {
         }
     }
 
+    public static boolean renameTask(int id, String newName) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set name = ? where id = ?");
+
+            proj.setString(1, newName);
+            proj.setInt(2, id);
+            proj.execute();
+
+            return proj.getUpdateCount() == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to create task.");
+        }
+    }
+
+    public static Project findProjectWithTask(int taskID) throws Exception{
+        Connection conn = DatabaseAccess.connect();
+
+        PreparedStatement proj = conn.prepareStatement("select project from task where id = ?");
+        proj.setInt(1, taskID);
+        proj.execute();
+
+        String name = proj.getResultSet().getString(1);
+        System.out.println(name);
+        return getProject(name);
+    }
+
     public static boolean updateProjectArchived(Project project, boolean archived) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("update project set archived = ? where name = ?");
