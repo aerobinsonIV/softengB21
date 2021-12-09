@@ -284,7 +284,39 @@ public class DatabaseAccess {
             return proj.getUpdateCount() == 1;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new Exception("Failed to create task.");
+            throw new Exception("Failed to rename task.");
+        }
+    }
+
+    public static boolean markTask(int id, String status) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set status = ? where id = ?");
+
+            proj.setString(1, status);
+            proj.setInt(2, id);
+            proj.execute();
+
+            return proj.getUpdateCount() == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to mark task.");
+        }
+    }
+
+    public static Project findProjectWithTask(int id) throws Exception {
+        try {
+            PreparedStatement task = connect().prepareStatement("select * from task where id = ?");
+            task.setInt(1, id);
+            ResultSet rs = task.executeQuery();
+            rs.next();
+            String projectName = rs.getString("project");
+
+            return DatabaseAccess.getProject(projectName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to find project");
         }
     }
 
@@ -302,5 +334,4 @@ public class DatabaseAccess {
             throw new Exception("Failed to update project archived status!");
         }
     }
-
 }

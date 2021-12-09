@@ -8,7 +8,7 @@ import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
 import edu.wpi.cs3733.g.requests.RenameTaskRequest;
-import edu.wpi.cs3733.g.responses.RenameTaskResponse;
+import edu.wpi.cs3733.g.responses.GenericResponse;
 
 public class RenameTaskControllerTest extends BaseControllerTest {
     String testProjectName = "RenameTaskControllerTestProject";
@@ -19,19 +19,18 @@ public class RenameTaskControllerTest extends BaseControllerTest {
 
         DatabaseAccess.createProject(project);
         Task task = new Task("oldName");
+        project = DatabaseAccess.getProject(testProjectName);
         task = DatabaseAccess.createTask(project, task);
 
         assertEquals(task.getName(), "oldName");
-        System.out.println("assigned taskID: " + task.getId());
 
-        RenameTaskResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
-        assertEquals(res.getMessage(), "Task successfully renamed");
         assertEquals(res.getStatusCode(), 200);
+        assertEquals(res.getMessage(), "Task successfully renamed");
 
         assertEquals(task.getName(), "newName");
-
     }
 
     @Test
@@ -39,12 +38,13 @@ public class RenameTaskControllerTest extends BaseControllerTest {
         Project project = new Project(testProjectName);
 
         DatabaseAccess.createProject(project);
-        DatabaseAccess.createTask(project, new Task("oldName"));
-        Task task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
+        Task task = new Task("oldName");
+        project = DatabaseAccess.getProject(testProjectName);
+        task = DatabaseAccess.createTask(project, task);
 
         assertEquals(task.getName(), "oldName");
 
-        RenameTaskResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId() + 100, "newName"), null);
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId() + 100, "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "oldName");
@@ -52,15 +52,33 @@ public class RenameTaskControllerTest extends BaseControllerTest {
         assertEquals(res.getStatusCode(), 400);
     }
 
-    // public static void main(String[] args) {
-    //     try {
-    //         DatabaseAccess.forceReconnectForTesting();
-    //         DatabaseAccess.initSchemaForTesting();
-            
-    //         testSuccessfulRename();
-    //         // testUnsuccessfulRename();
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+    @Test
+    void testArchive() throws Exception {
+        Project project = new Project(testProjectName);
+
+        DatabaseAccess.createProject(project);
+        Task task = new Task("oldName");
+        project = DatabaseAccess.getProject(testProjectName);
+        task = DatabaseAccess.createTask(project, task);
+
+        assertEquals(task.getName(), "oldName");
+
+        DatabaseAccess.updateProjectArchived(project, true);
+
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
+
+        assertEquals(task.getName(), "oldName");
+
+        assertEquals(res.getStatusCode(), 400);
+        assertEquals(res.getMessage(), "Project is archived");
+
+        DatabaseAccess.updateProjectArchived(project, false);
+        GenericResponse res1 = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
+
+        assertEquals(task.getName(), "newName");
+
+        assertEquals(res1.getStatusCode(), 200);
+    }
 }

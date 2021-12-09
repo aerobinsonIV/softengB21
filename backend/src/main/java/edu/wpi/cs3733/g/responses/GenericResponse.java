@@ -1,10 +1,10 @@
 package edu.wpi.cs3733.g.responses;
 
-public class RenameTaskResponse {
+public class GenericResponse {
     int statusCode;
     String message;
 
-    public RenameTaskResponse(int statusCode, String message) {
+    public GenericResponse(int statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }
