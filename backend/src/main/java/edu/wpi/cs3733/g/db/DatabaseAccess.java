@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
+import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
 
 public class DatabaseAccess {
@@ -120,6 +121,18 @@ public class DatabaseAccess {
         while (rs.next()) {
             Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
 
+            // find out and update task status
+            PreparedStatement taskStatus = connect().prepareStatement("select * from task where id = ?;");
+            taskStatus.setInt(1, tempTask.getId());
+            ResultSet taskRs = taskStatus.executeQuery();
+            taskRs.next();
+            
+            TaskMarkValue status = TaskMarkValue.valueOf(taskRs.getString("status").toUpperCase());
+            System.out.println(status.name());
+
+            tempTask.setMarkStatus(status);
+
+            // update task assigned members
             for (int i = 0; i < assignedTaskIds.size(); i++) {
                 if (assignedTaskIds.get(i) == tempTask.getId()) {
                     //We found a task assignment that applies to this task, add this teammate
@@ -288,13 +301,13 @@ public class DatabaseAccess {
         }
     }
 
-    public static boolean markTask(int id, String status) throws Exception {
+    public static boolean markTask(int id, TaskMarkValue status) throws Exception {
         try {
             Connection conn = DatabaseAccess.connect();
 
             PreparedStatement proj = conn.prepareStatement("update task set status = ? where id = ?");
 
-            proj.setString(1, status);
+            proj.setString(1, status.name().toLowerCase());
             proj.setInt(2, id);
             proj.execute();
 
