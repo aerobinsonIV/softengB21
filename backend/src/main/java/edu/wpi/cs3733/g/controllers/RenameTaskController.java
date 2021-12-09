@@ -11,9 +11,6 @@ public class RenameTaskController implements RequestHandler<RenameTaskRequest, R
     @Override
     public RenameTaskResponse handleRequest(RenameTaskRequest input, Context context) {
         try {
-            if (DatabaseAccess.findProjectWithTask(input.getID()).getIsArchived()) 
-                return new RenameTaskResponse(400, "Project is archived");
-
             if (DatabaseAccess.renameTask(input.getID(), input.getNewName()))
                 return new RenameTaskResponse(200, "Task successfully renamed");
 

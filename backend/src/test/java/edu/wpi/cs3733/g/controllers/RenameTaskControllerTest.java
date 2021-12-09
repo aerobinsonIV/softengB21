@@ -11,58 +11,56 @@ import edu.wpi.cs3733.g.requests.RenameTaskRequest;
 import edu.wpi.cs3733.g.responses.RenameTaskResponse;
 
 public class RenameTaskControllerTest extends BaseControllerTest {
+    String testProjectName = "RenameTaskControllerTestProject";
+
     @Test
     void testSuccessfulRename() throws Exception {
-        Project project = new Project("P1");
+        Project project = new Project(testProjectName);
 
         DatabaseAccess.createProject(project);
-        DatabaseAccess.createTask(project, new Task("oldName"));
-        Task task = DatabaseAccess.getProject("P1").getTasks().get(0);
+        Task task = new Task("oldName");
+        task = DatabaseAccess.createTask(project, task);
 
         assertEquals(task.getName(), "oldName");
+        System.out.println("assigned taskID: " + task.getId());
 
         RenameTaskResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
-        task = DatabaseAccess.getProject("P1").getTasks().get(0);
+        task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
+
+        assertEquals(res.getMessage(), "Task successfully renamed");
+        assertEquals(res.getStatusCode(), 200);
 
         assertEquals(task.getName(), "newName");
 
-        assertEquals(res.getStatusCode(), 200);
     }
 
     @Test
     void testUnsuccessfulRename() throws Exception {
-        Project project = new Project("P1");
+        Project project = new Project(testProjectName);
 
         DatabaseAccess.createProject(project);
         DatabaseAccess.createTask(project, new Task("oldName"));
-        Task task = DatabaseAccess.getProject("P1").getTasks().get(0);
+        Task task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "oldName");
 
         RenameTaskResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId() + 100, "newName"), null);
-        task = DatabaseAccess.getProject("P1").getTasks().get(0);
+        task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "oldName");
 
         assertEquals(res.getStatusCode(), 400);
-
-        // test archived project now
-
-        Project project1 = new Project("P2");
-
-        DatabaseAccess.createProject(project1);
-        DatabaseAccess.createTask(project1, new Task("oldName"));
-        Task task1 = DatabaseAccess.getProject("P2").getTasks().get(0);
-
-        assertEquals(task1.getName(), "oldName");
-
-        DatabaseAccess.updateProjectArchived(project1, true);
-
-        RenameTaskResponse res1 = new RenameTaskController().handleRequest(new RenameTaskRequest(task1.getId(), "newName"), null);
-        task1 = DatabaseAccess.getProject("P1").getTasks().get(0);
-
-        assertEquals(task1.getName(), "oldName");
-
-        assertEquals(res1.getStatusCode(), 400);
     }
+
+    // public static void main(String[] args) {
+    //     try {
+    //         DatabaseAccess.forceReconnectForTesting();
+    //         DatabaseAccess.initSchemaForTesting();
+            
+    //         testSuccessfulRename();
+    //         // testUnsuccessfulRename();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 }

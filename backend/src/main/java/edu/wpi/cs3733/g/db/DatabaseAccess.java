@@ -288,18 +288,6 @@ public class DatabaseAccess {
         }
     }
 
-    public static Project findProjectWithTask(int taskID) throws Exception{
-        Connection conn = DatabaseAccess.connect();
-
-        PreparedStatement proj = conn.prepareStatement("select project from task where id = ?");
-        proj.setInt(1, taskID);
-        proj.execute();
-
-        String name = proj.getResultSet().getString(1);
-        System.out.println(name);
-        return getProject(name);
-    }
-
     public static boolean updateProjectArchived(Project project, boolean archived) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("update project set archived = ? where name = ?");
