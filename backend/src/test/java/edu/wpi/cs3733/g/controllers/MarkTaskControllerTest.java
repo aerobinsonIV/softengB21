@@ -25,7 +25,7 @@ public class MarkTaskControllerTest extends BaseControllerTest {
 
         assertEquals(task.getMarkStatus(), TaskMarkValue.IN_PROGRESS);
 
-        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(task.getId(), "complete"), null);
+        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(testProjectName, task.getId(), "complete"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(res.getStatusCode(), 200);
@@ -45,14 +45,14 @@ public class MarkTaskControllerTest extends BaseControllerTest {
 
         assertEquals(task.getMarkStatus(), TaskMarkValue.IN_PROGRESS);
 
-        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(task.getId() + 100, "complete"), null);
+        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(testProjectName, task.getId() + 100, "complete"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(res.getStatusCode(), 400);
 
         assertEquals(task.getMarkStatus(), TaskMarkValue.IN_PROGRESS);
 
-        res = new MarkTaskController().handleRequest(new MarkTaskRequest(task.getId(), "not_markable"), null);
+        res = new MarkTaskController().handleRequest(new MarkTaskRequest(testProjectName, task.getId(), "not_markable"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(res.getStatusCode(), 400);
@@ -73,7 +73,7 @@ public class MarkTaskControllerTest extends BaseControllerTest {
 
         DatabaseAccess.updateProjectArchived(project, true);
 
-        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(task.getId(), "complete"), null);
+        GenericResponse res = new MarkTaskController().handleRequest(new MarkTaskRequest(testProjectName, task.getId(), "complete"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(res.getStatusCode(), 400);

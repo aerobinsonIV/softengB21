@@ -1,28 +1,38 @@
 package edu.wpi.cs3733.g.requests;
 
 public class RenameTaskRequest {
+    String projectName;
     int id;
-    String newName;
+    String name;
 
-    public int getID() {
+    public String getProjectName(){
+        return projectName;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public String getNewName() {
-        return newName;
+    public String getName() {
+        return name;
     }
 
-    public void setID(int id) {
+    public void setProjectName(String projectName){
+        this.projectName = projectName;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
-    public void setNewName(String newName) {
-        this.newName = newName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public RenameTaskRequest(int id, String newName) {
+    public RenameTaskRequest(String projectName, int id, String name) {
+        this.projectName = projectName;
         this.id = id;
-        this.newName = newName;
+        this.name = name;
     }
 
     public RenameTaskRequest() {}
@@ -31,6 +41,6 @@ public class RenameTaskRequest {
     public String toString() {
         return "RenameTaskRequest{" +
                 "id='" + id + '\'' +
-                "new_name='" + newName + "\''" + '}';
+                "name='" + name + "\''" + '}';
     }
 }

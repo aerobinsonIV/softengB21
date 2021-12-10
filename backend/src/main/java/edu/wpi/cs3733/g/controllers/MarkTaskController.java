@@ -14,18 +14,22 @@ public class MarkTaskController implements RequestHandler<MarkTaskRequest, Gener
     public GenericResponse handleRequest(MarkTaskRequest input, Context context) {
         try {
             String newStatus = input.getNewStatus();
-            if (!(newStatus.equals("in_progress") || newStatus.equals("complete")))
+            if (!(newStatus.equals("in_progress") || newStatus.equals("complete"))){
                 return new GenericResponse(400, "Invalid Mark Status");
+            }
 
-            Project project = DatabaseAccess.findProjectWithTask(input.getID());
-            if (project.getIsArchived()) 
+            Project project = DatabaseAccess.findProjectWithTask(input.getId());
+            if (project.getIsArchived()){
                 return new GenericResponse(400, "Project is archived");
+            }
 
-            if (!project.getTask(input.getID()).isLeafTask())
+            if (!project.getTask(input.getId()).isLeafTask()){
                 return new GenericResponse(400, "Cannot change mark status of task with subtasks");
+            }
 
-            if (DatabaseAccess.markTask(input.getID(), TaskMarkValue.valueOf(newStatus.toUpperCase())))
+            if (DatabaseAccess.markTask(input.getId(), TaskMarkValue.valueOf(newStatus.toUpperCase()))){
                 return new GenericResponse(200, "Task successfully marked");
+            }
 
             return new GenericResponse(400, "Task not found and/or marked");
         } catch (Exception e) {

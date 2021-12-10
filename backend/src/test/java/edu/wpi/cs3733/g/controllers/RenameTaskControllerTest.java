@@ -24,7 +24,7 @@ public class RenameTaskControllerTest extends BaseControllerTest {
 
         assertEquals(task.getName(), "oldName");
 
-        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(testProjectName, task.getId(), "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(res.getStatusCode(), 200);
@@ -44,7 +44,7 @@ public class RenameTaskControllerTest extends BaseControllerTest {
 
         assertEquals(task.getName(), "oldName");
 
-        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId() + 100, "newName"), null);
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(testProjectName, task.getId() + 100, "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "oldName");
@@ -65,7 +65,7 @@ public class RenameTaskControllerTest extends BaseControllerTest {
 
         DatabaseAccess.updateProjectArchived(project, true);
 
-        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        GenericResponse res = new RenameTaskController().handleRequest(new RenameTaskRequest(testProjectName, task.getId(), "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "oldName");
@@ -74,7 +74,7 @@ public class RenameTaskControllerTest extends BaseControllerTest {
         assertEquals(res.getMessage(), "Project is archived");
 
         DatabaseAccess.updateProjectArchived(project, false);
-        GenericResponse res1 = new RenameTaskController().handleRequest(new RenameTaskRequest(task.getId(), "newName"), null);
+        GenericResponse res1 = new RenameTaskController().handleRequest(new RenameTaskRequest(testProjectName, task.getId(), "newName"), null);
         task = DatabaseAccess.getProject(testProjectName).getTasks().get(0);
 
         assertEquals(task.getName(), "newName");

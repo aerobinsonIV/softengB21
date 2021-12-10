@@ -11,10 +11,10 @@ public class RenameTaskController implements RequestHandler<RenameTaskRequest, G
     @Override
     public GenericResponse handleRequest(RenameTaskRequest input, Context context) {
         try {
-            if (DatabaseAccess.findProjectWithTask(input.getID()).getIsArchived()) 
+            if (DatabaseAccess.findProjectWithTask(input.getId()).getIsArchived()) 
                 return new GenericResponse(400, "Project is archived");
 
-            if (DatabaseAccess.renameTask(input.getID(), input.getNewName()))
+            if (DatabaseAccess.renameTask(input.getId(), input.getName()))
                 return new GenericResponse(200, "Task successfully renamed");
 
             return new GenericResponse(400, "Task not found and/or renamed");

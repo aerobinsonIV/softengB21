@@ -1,10 +1,15 @@
 package edu.wpi.cs3733.g.requests;
 
 public class MarkTaskRequest {
+    String projectName;
     int id;
     String newStatus;
 
-    public int getID() {
+    public String getProjectName(){
+        return projectName;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -12,7 +17,11 @@ public class MarkTaskRequest {
         return newStatus;
     }
 
-    public void setID(int id) {
+    public void setProjectName(String projectName){
+        this.projectName = projectName;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -20,7 +29,8 @@ public class MarkTaskRequest {
         this.newStatus = newStatus;
     }
 
-    public MarkTaskRequest(int id, String newStatus) {
+    public MarkTaskRequest(String projectName, int id, String newStatus) {
+        this.projectName = projectName;
         this.id = id;
         this.newStatus = newStatus;
     }
