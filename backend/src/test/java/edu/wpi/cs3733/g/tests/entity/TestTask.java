@@ -178,11 +178,11 @@ public class TestTask {
         testTask.addSubtask(testSubtask1);
         testTask.addSubtask(testSubtask2);
 
-        ArrayList<Task> subtasks = testTask.getSubtasks();
+        ArrayList<Integer> subtasks = testTask.getSubtasks();
 
         assertEquals(2, subtasks.size());
 
-        assertTrue(subtasks.contains(testSubtask1));
-        assertTrue(subtasks.contains(testSubtask2));
+        assertTrue(subtasks.contains(testSubtask1.getId()));
+        assertTrue(subtasks.contains(testSubtask2.getId()));
     }
 }

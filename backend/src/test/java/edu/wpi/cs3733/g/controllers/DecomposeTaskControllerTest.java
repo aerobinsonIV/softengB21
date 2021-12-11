@@ -36,6 +36,31 @@ public class DecomposeTaskControllerTest extends BaseControllerTest {
     }
 
     @Test
+    void testNestedDecompose() throws Exception {
+        Project project = new Project(testProjectName);
+
+        DatabaseAccess.createProject(project);
+        Task task = new Task("task");
+        project = DatabaseAccess.getProject(testProjectName);
+        task = DatabaseAccess.createTask(project, task);
+
+        GenericResponse res = new DecomposeTaskController().handleRequest(new DecomposeTaskRequest(task.getId(), "childTask"), null);
+        GenericResponse res1 = new DecomposeTaskController().handleRequest(new DecomposeTaskRequest(task.getId() + 1, "grandChildTask"), null);
+        List<Task> tasks = DatabaseAccess.getProject(testProjectName).getTasks();
+
+        assertEquals(tasks.size(), 3);
+
+        assertEquals(res.getStatusCode(), 200);
+        assertEquals(res.getMessage(), "Task successfully decomposed");
+
+        assertEquals(res1.getStatusCode(), 200);
+        assertEquals(res1.getMessage(), "Task successfully decomposed");
+
+        assertEquals(DatabaseAccess.getParent(task.getId() + 1), task.getId());
+        assertEquals(DatabaseAccess.getParent(task.getId() + 2), task.getId() + 1);
+    }
+
+    @Test
     void testUnsuccessfulDecompose() throws Exception {
         Project project = new Project(testProjectName);
 

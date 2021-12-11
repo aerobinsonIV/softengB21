@@ -5,8 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
@@ -118,8 +117,19 @@ public class DatabaseAccess {
         rs = taskPS.executeQuery();
 
         //Loop through tasks
+
+        Map<Integer, List<Integer>> subtasks = new HashMap<Integer, List<Integer>>(); // maps parent ID to all child IDs
         while (rs.next()) {
-            Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
+            int taskID = rs.getInt("id");
+            Task tempTask = new Task(rs.getString("name"), taskID);
+
+            // update task assigned members
+            for (int i = 0; i < assignedTaskIds.size(); i++) {
+                if (assignedTaskIds.get(i) == taskID) {
+                    //We found a task assignment that applies to this task, add this teammate
+                    tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
+                }
+            }
 
             // find out and update task status
             PreparedStatement taskStatus = connect().prepareStatement("select * from task where id = ?;");
@@ -128,22 +138,26 @@ public class DatabaseAccess {
             taskRs.next();
             
             TaskMarkValue status = TaskMarkValue.valueOf(taskRs.getString("status").toUpperCase());
-            System.out.println(status.name());
-
             tempTask.setMarkStatus(status);
 
-            // update task assigned members
-            for (int i = 0; i < assignedTaskIds.size(); i++) {
-                if (assignedTaskIds.get(i) == tempTask.getId()) {
-                    //We found a task assignment that applies to this task, add this teammate
-                    tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
-                }
+            // find any and all subtasks (will update after all subtasks have been found)
+            int parentID = taskRs.getInt("parent");
+
+            if (parentID != 0) { // task is a subtask
+                subtasks.putIfAbsent(parentID, new ArrayList<Integer>());
+                subtasks.get(parentID).add(taskID);
             }
 
             project.addTask(tempTask);
         }
 
-        // TODO: Add logic here for dealing with task children
+        // update all tasks with subtasks
+        for (Task task : project.getTasks()) {
+            if (subtasks.containsKey(task.getId())) {
+                for (int childID : subtasks.get(task.getId()))
+                task.addSubtask(new Task("", childID));
+            }
+        }
     }
 
     public static Project getProject(String projectName) throws Exception {
@@ -252,9 +266,9 @@ public class DatabaseAccess {
             PreparedStatement proj = conn.prepareStatement("select * from project where name=?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
             proj.setString(1, project.getName());
-            System.out.println("Before createTask exec");
+            // System.out.println("Before createTask exec");
             proj.execute();
-            System.out.println("After createTask exec");
+            // System.out.println("After createTask exec");
 
             proj.getResultSet().last();
 
