@@ -9,25 +9,28 @@ import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.requests.MarkTaskRequest;
 import edu.wpi.cs3733.g.responses.GenericResponse;
 
-public class MarkTaskController implements RequestHandler<MarkTaskRequest, GenericResponse>{
+public class MarkTaskController implements RequestHandler<MarkTaskRequest, GenericResponse> {
     @Override
     public GenericResponse handleRequest(MarkTaskRequest input, Context context) {
         try {
             String newStatus = input.getNewStatus();
-            if (!(newStatus.equals("in_progress") || newStatus.equals("complete"))){
+            if (!(newStatus.equals("in_progress") || newStatus.equals("complete"))) {
                 return new GenericResponse(400, "Invalid Mark Status");
             }
 
             Project project = DatabaseAccess.findProjectWithTask(input.getId());
-            if (project.getIsArchived()){
+            if (project.getIsArchived()) {
                 return new GenericResponse(400, "Project is archived");
             }
 
-            if (!project.getTask(input.getId()).isLeafTask()){
+            if (!project.getTask(input.getId()).isLeafTask()) {
                 return new GenericResponse(400, "Cannot change mark status of task with subtasks");
             }
 
-            if (DatabaseAccess.markTask(input.getId(), TaskMarkValue.valueOf(newStatus.toUpperCase()))){
+            if (DatabaseAccess.markTask(input.getId(), TaskMarkValue.valueOf(newStatus.toUpperCase()))) {
+                // update mark status of any parent tasks
+                DatabaseAccess.updateParentStatus(input.getId()); // will do nothing if task has no parent
+
                 return new GenericResponse(200, "Task successfully marked");
             }
 

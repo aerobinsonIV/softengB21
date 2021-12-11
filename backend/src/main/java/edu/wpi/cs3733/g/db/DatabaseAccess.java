@@ -332,6 +332,48 @@ public class DatabaseAccess {
         }
     }
 
+    public static void updateParentStatus(int childID) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement getParent = conn.prepareStatement("select * from task where id = ?");
+            getParent.setInt(1, childID);
+            ResultSet rs = getParent.executeQuery();
+            rs.next();
+
+            int parentID = rs.getInt("parent");
+
+            while(parentID != 0) {
+                PreparedStatement getChildren = conn.prepareStatement("select * from task where parent = ?");
+                getChildren.setInt(1, parentID);
+                ResultSet rsChildren = getChildren.executeQuery();
+                
+                boolean allComplete = true;
+
+                while (allComplete && rsChildren.next()) {
+                    allComplete &= rsChildren.getString("status").equals("complete");
+                }
+
+                if (allComplete) {
+                    markTask(parentID, TaskMarkValue.COMPLETE);
+                } else {
+                    markTask(parentID, TaskMarkValue.IN_PROGRESS);
+                }
+
+                // Update rs so that the outer while loop will look for the parent's parent
+                getParent = conn.prepareStatement("select * from task where id = ?");
+                getParent.setInt(1, parentID);
+                ResultSet rsParent = getParent.executeQuery();
+                rsParent.next();
+
+                parentID = rsParent.getInt("parent");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to mark task.");
+        }
+    }
+
     public static void setTaskParent(int parentID, int childID) throws Exception {
         try {
             Connection conn = DatabaseAccess.connect();
