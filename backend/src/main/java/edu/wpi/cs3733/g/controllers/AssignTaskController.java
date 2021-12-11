@@ -23,6 +23,11 @@ public class AssignTaskController implements RequestHandler<AssignTaskRequest, T
                 System.out.println("Project is archived");
                 return null;
             }
+
+            if (DatabaseAccess.hasChild(req.getTaskId())) {
+                System.out.println("Cannot assign teammate to task with subtasks");
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("Failed to access database to check if project exists");
             e.printStackTrace();
