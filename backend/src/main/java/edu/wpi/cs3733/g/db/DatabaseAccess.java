@@ -251,6 +251,17 @@ public class DatabaseAccess {
         }
     }
 
+    public static void reassignTask(int oldTaskID, int newTaskID) throws Exception {
+        try {
+            PreparedStatement statement = connect().prepareStatement("update task_assignments set task = ? where task = ?");
+            statement.setInt(1, newTaskID);
+            statement.setInt(2, oldTaskID);
+            statement.execute();
+        } catch (Exception e) {
+            throw new Exception("Failed to reassign task teammates!");
+        }
+    }
+
     public static void initSchemaForTesting() {
         try {
             connect().prepareStatement("create table project\n" +

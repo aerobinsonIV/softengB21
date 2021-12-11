@@ -22,6 +22,7 @@ public class DecomposeTaskController implements RequestHandler<DecomposeTaskRequ
             Task child = DatabaseAccess.createTask(project, new Task(input.getChildName()));
             DatabaseAccess.setTaskParent(input.getParentID(), child.getId());
             DatabaseAccess.markTask(input.getParentID(), TaskMarkValue.IN_PROGRESS); // in progress because child is in progress
+            DatabaseAccess.reassignTask(input.getParentID(), child.getId()); // move all teammates from parent to child
 
             return new GenericResponse(200, "Task successfully decomposed");
         } catch (Exception e) {
