@@ -21,10 +21,10 @@ public class ArchiveProjectController implements RequestHandler<ArchiveProjectRe
 
                 return project;
             } else {
-                return new Project("Failed");
+                return null;
             }
         } catch (Exception e) {
-            return new Project("Failed");
+            return null;
         }
     }
 }
