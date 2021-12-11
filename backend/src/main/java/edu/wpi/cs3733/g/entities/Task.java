@@ -8,7 +8,7 @@ public class Task {
     private int _id;
     private TaskMarkValue _mark = TaskMarkValue.IN_PROGRESS;
     private ArrayList<Teammate> _assignedTeammates = new ArrayList<Teammate>();
-    private ArrayList<Task> _subtasks = new ArrayList<Task>();
+    private ArrayList<Integer> _subtasks = new ArrayList<Integer>();
 
     public Task(String name, int id){
         _name = name;
@@ -82,10 +82,10 @@ public class Task {
     }
 
     public void addSubtask(Task subtask){
-        _subtasks.add(subtask);
+        _subtasks.add(subtask.getId());
     }
 
-    public ArrayList<Task> getSubtasks(){
+    public ArrayList<Integer> getSubtasks(){
         return _subtasks;
     }
 }

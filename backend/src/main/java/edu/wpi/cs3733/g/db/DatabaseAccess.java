@@ -5,11 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.UUID;
+import java.util.*;
 
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
+import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.entities.Teammate;
 
 public class DatabaseAccess {
@@ -117,20 +117,47 @@ public class DatabaseAccess {
         rs = taskPS.executeQuery();
 
         //Loop through tasks
-        while (rs.next()) {
-            Task tempTask = new Task(rs.getString("name"), rs.getInt("id"));
 
+        Map<Integer, List<Integer>> subtasks = new HashMap<Integer, List<Integer>>(); // maps parent ID to all child IDs
+        while (rs.next()) {
+            int taskID = rs.getInt("id");
+            Task tempTask = new Task(rs.getString("name"), taskID);
+
+            // update task assigned members
             for (int i = 0; i < assignedTaskIds.size(); i++) {
-                if (assignedTaskIds.get(i) == tempTask.getId()) {
+                if (assignedTaskIds.get(i) == taskID) {
                     //We found a task assignment that applies to this task, add this teammate
                     tempTask.assignTeammate(new Teammate(assignedTaskTeammateNames.get(i), projectName));
                 }
             }
 
+            // find out and update task status
+            PreparedStatement taskStatus = connect().prepareStatement("select * from task where id = ?;");
+            taskStatus.setInt(1, tempTask.getId());
+            ResultSet taskRs = taskStatus.executeQuery();
+            taskRs.next();
+            
+            TaskMarkValue status = TaskMarkValue.valueOf(taskRs.getString("status").toUpperCase());
+            tempTask.setMarkStatus(status);
+
+            // find any and all subtasks (will update after all subtasks have been found)
+            int parentID = taskRs.getInt("parent");
+
+            if (parentID != 0) { // task is a subtask
+                subtasks.putIfAbsent(parentID, new ArrayList<Integer>());
+                subtasks.get(parentID).add(taskID);
+            }
+
             project.addTask(tempTask);
         }
 
-        // TODO: Add logic here for dealing with task children
+        // update all tasks with subtasks
+        for (Task task : project.getTasks()) {
+            if (subtasks.containsKey(task.getId())) {
+                for (int childID : subtasks.get(task.getId()))
+                task.addSubtask(new Task("", childID));
+            }
+        }
     }
 
     public static Project getProject(String projectName) throws Exception {
@@ -271,9 +298,9 @@ public class DatabaseAccess {
             PreparedStatement proj = conn.prepareStatement("select * from project where name=?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
             proj.setString(1, project.getName());
-            System.out.println("Before createTask exec");
+            // System.out.println("Before createTask exec");
             proj.execute();
-            System.out.println("After createTask exec");
+            // System.out.println("After createTask exec");
 
             proj.getResultSet().last();
 
@@ -303,6 +330,127 @@ public class DatabaseAccess {
         }
     }
 
+    public static boolean renameTask(int id, String newName) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set name = ? where id = ?");
+
+            proj.setString(1, newName);
+            proj.setInt(2, id);
+            proj.execute();
+
+            return proj.getUpdateCount() == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to rename task.");
+        }
+    }
+
+    public static boolean markTask(int id, TaskMarkValue status) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set status = ? where id = ?");
+
+            proj.setString(1, status.name().toLowerCase());
+            proj.setInt(2, id);
+            proj.execute();
+
+            return proj.getUpdateCount() == 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to mark task.");
+        }
+    }
+
+    public static void updateParentStatus(int childID) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement getParent = conn.prepareStatement("select * from task where id = ?");
+            getParent.setInt(1, childID);
+            ResultSet rs = getParent.executeQuery();
+            rs.next();
+
+            int parentID = rs.getInt("parent");
+
+            while(parentID != 0) {
+                PreparedStatement getChildren = conn.prepareStatement("select * from task where parent = ?");
+                getChildren.setInt(1, parentID);
+                ResultSet rsChildren = getChildren.executeQuery();
+                
+                boolean allComplete = true;
+
+                while (allComplete && rsChildren.next()) {
+                    allComplete &= rsChildren.getString("status").equals("complete");
+                }
+
+                if (allComplete) {
+                    markTask(parentID, TaskMarkValue.COMPLETE);
+                } else {
+                    markTask(parentID, TaskMarkValue.IN_PROGRESS);
+                }
+
+                // Update rs so that the outer while loop will look for the parent's parent
+                getParent = conn.prepareStatement("select * from task where id = ?");
+                getParent.setInt(1, parentID);
+                ResultSet rsParent = getParent.executeQuery();
+                rsParent.next();
+
+                parentID = rsParent.getInt("parent");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to mark task.");
+        }
+    }
+
+    public static void setTaskParent(int parentID, int childID) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+
+            PreparedStatement proj = conn.prepareStatement("update task set parent = ? where id = ?");
+
+            proj.setInt(1, parentID);
+            proj.setInt(2, childID);
+            proj.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to set parent task.");
+        }
+    }
+
+    public static Project findProjectWithTask(int id) throws Exception {
+        try {
+            PreparedStatement task = connect().prepareStatement("select * from task where id = ?");
+            task.setInt(1, id);
+            ResultSet rs = task.executeQuery();
+            rs.next();
+            String projectName = rs.getString("project");
+
+            return DatabaseAccess.getProject(projectName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to find project");
+        }
+    }
+
+    public static int getParent(int childID) throws Exception {
+        try {
+            PreparedStatement task = connect().prepareStatement("select parent from task where id = ?");
+            task.setInt(1, childID);
+            ResultSet rs = task.executeQuery();
+            rs.next();
+            int parentID = rs.getInt("parent");
+
+            return parentID;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to find project");
+        }
+    }
+
     public static boolean updateProjectArchived(Project project, boolean archived) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("update project set archived = ? where name = ?");
@@ -318,5 +466,4 @@ public class DatabaseAccess {
             throw new Exception("Failed to update project archived status!");
         }
     }
-
 }
