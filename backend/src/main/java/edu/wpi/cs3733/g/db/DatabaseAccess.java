@@ -138,7 +138,6 @@ public class DatabaseAccess {
 
             //Get project with specified name (only for archive status)
             PreparedStatement projectPS = connect().prepareStatement("select * from project where name = ?");
-
             projectPS.setString(1, projectName);
 
             ResultSet rs = projectPS.executeQuery();
@@ -181,6 +180,26 @@ public class DatabaseAccess {
         }
     }
 
+    public static boolean checkProjectExists(String projectName) throws Exception{
+        try {
+
+            //Get project with specified name (only for archive status)
+            PreparedStatement projectPS = connect().prepareStatement("select * from project where name = ?");
+            projectPS.setString(1, projectName);
+
+            ResultSet rs = projectPS.executeQuery();
+
+            if(rs.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to check if project exists!");
+        }
+    }
+
     public static boolean deleteProject(Project project) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("delete from project where name = ?;");
@@ -189,6 +208,19 @@ public class DatabaseAccess {
             return true;
         } catch (Exception e) {
             throw new Exception("Failed to delete project!");
+        }
+    }
+
+    public static boolean createTaskAssignment(String projectName, int taskId, String teammate_name) throws Exception{
+        try {
+            PreparedStatement statement = connect().prepareStatement("insert into task_assignments values (?, ?, ?);");
+            statement.setString(1, "" + taskId);
+            statement.setString(2, teammate_name);
+            statement.setString(3, projectName);
+            statement.execute();
+            return true;
+        } catch (Exception e) {
+            throw new Exception("Failed to create task assignment!");
         }
     }
 
