@@ -14,7 +14,7 @@ public class AssignTaskController implements RequestHandler<AssignTaskRequest, T
     @Override
     public Task handleRequest(AssignTaskRequest req, Context context) {
         try {
-            if(!DatabaseAccess.checkProjectExists(req.getProjectName())) { // this is where the problem happens
+            if(!DatabaseAccess.checkProjectExists(req.getProjectName())) {
                 System.out.println("Project does not exist");
                 return null;
             }
