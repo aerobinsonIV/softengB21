@@ -28,7 +28,7 @@ function addTask() {
                 console.log(xhr.responseText)
                 var jsonResponse = JSON.parse(xhr.responseText)
 
-                if (jsonResponse["name"] == undefined) {
+                if (xhr.responseText == null || xhr.responseText == "null") {
                     alert('Project with name ' + projectName + ' does not exist. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
