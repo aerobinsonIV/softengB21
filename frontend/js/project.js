@@ -137,6 +137,40 @@ function assignTeammate() {
     }
 }
 
+function unassignTeammate() {
+    var projectHeader = document.getElementById("create-header").innerHTML
+    var projectName = projectHeader.substring(projectHeader.indexOf(" ") + 1)
+    var taskID = document.getElementById("unassign-taskid-input").value
+    var teammateName = document.getElementById("unassign-teammate-input").value
+
+    if (taskID == '' || teammateName == '') {
+        alert('Please input a task ID and a teammate name into the box below \'Assign Teammate To Task\'')
+    } else if (!checkTaskID(taskID)) {
+        alert('The task with that id does not exist.')
+    } else {
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/task/unassign/' + projectName + "/" + taskID + "/" + teammateName
+
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', url, true)
+
+        xhr.send()
+
+        xhr.onloadend = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                console.log(xhr.responseText)
+
+                if (xhr.responseText == null || xhr.responseText == "null") {
+                    alert('Desired Task and/or Teammate do not exists. Check project is not archived.')
+                } else {
+                    loadProjectWithName(projectName)
+                }
+            } else {
+                alert('Something went wrong')
+            }
+        }
+    }
+}
+
 function markTask() {
     var projectHeader = document.getElementById("create-header").innerHTML
     var projectName = projectHeader.substring(projectHeader.indexOf(" ") + 1)
