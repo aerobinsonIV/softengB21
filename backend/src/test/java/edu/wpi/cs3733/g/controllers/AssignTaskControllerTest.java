@@ -26,13 +26,21 @@ public class AssignTaskControllerTest extends BaseControllerTest {
         Teammate bob = new Teammate("Bob", "P1");
         DatabaseAccess.createTeammate(bob);
 
-        AssignTaskRequest request = new AssignTaskRequest("P1", taskWithId.getId(), "Bob");
+        AssignTaskRequest request = new AssignTaskRequest("P1", taskWithId.getId(), "Bob", true);
 
         assignTaskController.handleRequest(request, null);
 
         GetProjectRequest p1Request = new GetProjectRequest("P1");
 
         Assertions.assertEquals("Bob", getProjectController.handleRequest(p1Request, null).getTasks().get(0).getTeammates().get(0).getName());
-        
+
+        //test unassigning the task
+        AssignTaskRequest request1 = new AssignTaskRequest("P1", taskWithId.getId(), "Bob", false);
+
+        assignTaskController.handleRequest(request1, null);
+
+        project = getProjectController.handleRequest(p1Request, null);
+        Assertions.assertEquals(0, project.getTasks().get(0).getTeammates().size());
+        Assertions.assertEquals(1, project.getTeam().size());
     }
 }
