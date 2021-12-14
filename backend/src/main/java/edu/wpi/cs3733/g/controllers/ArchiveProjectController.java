@@ -14,10 +14,10 @@ public class ArchiveProjectController implements RequestHandler<ArchiveProjectRe
         Project project = new Project(req.getProjectName());
 
         try {
-            boolean success = DatabaseAccess.updateProjectArchived(project, true);
+            boolean success = DatabaseAccess.updateProjectArchived(project, req.getArchive());
 
             if(success) {
-                project.setArchived(true);
+                project.setArchived(req.getArchive());
 
                 return project;
             } else {
