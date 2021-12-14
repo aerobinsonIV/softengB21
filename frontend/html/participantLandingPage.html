@@ -40,13 +40,22 @@
             <input type="button" value="Submit" onClick="JavaScript:addTask()">
         </form>
 
+        <h1 id="add-subtask-header" class="hidden">Add Subtask to Task</h1>
+        <form id="add-subtask-form" method="post" class="hidden">
+            <h3 id="add-taskid-input-label" class="hidden">Parent Task ID</h3>
+            <input id="add-taskid-input" value="" />
+            <h3 id="add-childname-input-label" class="hidden">Child Task Name (Creates a new task)</h3>
+            <input id="add-childname-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:decomposeTask()">
+        </form>
+
         <h1 id="mark-task-header" class="hidden">Mark Task</h1>
         <form id="mark-task-form" method="post" class="hidden">
             <h3 id="mark-taskid-label" class="hidden">Task ID</h3>
             <input id="mark-taskid-input" value="" />
             <h3 id="mark-status-label" class="hidden">Task Status (either 'in_progress' or 'complete')</h3>
             <input id="mark-status-input" value="" />
-            <input type="button" value="Submit" onClick="JavaScript:addTask()">
+            <input type="button" value="Submit" onClick="JavaScript:markTask()">
         </form>
 
         <h1 id="add-teammate-header" class="hidden">Add Teammate To Project</h1>
@@ -69,7 +78,7 @@
             <input id="assign-taskid-input" value="" />
             <h3 id="assign-teammate-input-label" class="hidden">Teammate Name</h3>
             <input id="assign-teammate-input" value="" />
-            <input type="button" value="Submit" onClick="">
+            <input type="button" value="Submit" onClick="Javascript:assignTeammate()">
         </form>
 
         <h1 id="unassign-teammate-header" class="hidden">Unassign Teammate From Task</h1>

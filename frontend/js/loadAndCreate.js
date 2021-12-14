@@ -1,3 +1,5 @@
+var tasksCache = null
+
 function createProject() {
     var name = document.getElementById("create-input").value
 
@@ -91,8 +93,7 @@ function renderTasks(response) {
     var divStr = ""
 
     var tasks = response["tasks"]
-
-    console.log(tasks.length)
+    tasksCache = response["tasks"]
 
     for (var index in tasks) {
         if (idMap.get(index) != true) {
@@ -100,40 +101,13 @@ function renderTasks(response) {
 
             divStr += renderTask(tasks, index, 0, idMap) // top level task
         }
-
-        // divStr += "<div class=\"padded\">"
-
-        // divStr += "name: " + tasks[index].name + "<br>"
-        // divStr += "id: " + tasks[index].id + "<br>"
-        // divStr += "status: " + tasks[index].markStatus + "<br>"
-
-        // divStr += "Assigned teamates: "
-        // if (tasks[index].teammates.length == 0) {
-        //     divStr += "None"
-        // } else {
-        //     divStr += "<br>"
-        //     for (var tmIndex in tasks[index].teammates) {
-        //         divStr += "<p style=\"text-indent: 20px\">" + tasks[index].teammates[tmIndex].name + "</p>"
-        //     }
-        // }
-
-        // divStr += "</div>"
     }
 
     document.getElementById("task-view").innerHTML = divStr;
 }
 
 function renderTask(tasks, index, indentLevel, map) {
-    console.log(tasks)
-    console.log("rendering " + index)
     map.set(index, true)
-
-    // var indentStr = ""
-    // var indentStrEnd = ""
-    // for (var i = 0; i < indentLevel; i++) {
-    //     indentStr += "<p style=\"text-indent: 20px\">"
-    //     indentStrEnd += "</p>"
-    // }
 
     var indentStr = "<p style=\"text-indent: "+ (20 * indentLevel) +"px\">"
     var indentStrEnd = "</p>"
@@ -178,8 +152,6 @@ function renderTeammates(response) {
     var divStr = ""
 
     var teammates = response["team"]
-
-    console.log(teammates.length)
 
     for (var index in teammates) {
         divStr += "<div>"
