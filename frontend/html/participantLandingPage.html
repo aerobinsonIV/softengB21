@@ -58,6 +58,15 @@
             <input type="button" value="Submit" onClick="JavaScript:markTask()">
         </form>
 
+        <h1 id="rename-task-header" class="hidden">Rename Task</h1>
+        <form id="rename-task-form" method="post" class="hidden">
+            <h3 id="rename-taskid-label" class="hidden">Task ID</h3>
+            <input id="rename-taskid-input" value="" />
+            <h3 id="rename-name-label" class="hidden">New Task Name</h3>
+            <input id="rename-name-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:renameTask()">
+        </form>
+
         <h1 id="add-teammate-header" class="hidden">Add Teammate To Project</h1>
         <form id="add-teammate-form" method="post" class="hidden">
             <h3 id="add-teammate-input-label" class="hidden">Teammate Name</h3>

@@ -117,7 +117,8 @@ function renderTask(tasks, index, indentLevel, map, labelNum) {
 
     divStr += "<h2 style=\"text-indent: "+ (20 * (indentLevel)) +"px\">" + labelNum + "</h2>"
 
-    divStr += indentStr + "name: " + tasks[index].name + "<br>" + indentStrEnd
+    var taskName = tasks[index].name.replaceAll("%20", " ")
+    divStr += indentStr + "name: " + taskName + "<br>" + indentStrEnd
     divStr += indentStr + "id: " + tasks[index].id + "<br>" + indentStrEnd
     var statusStr = tasks[index].markStatus
     if (statusStr == "IN_PROGRESS") {

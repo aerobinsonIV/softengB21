@@ -1,6 +1,5 @@
 function checkTaskID(id) {
     for (var taskIndex in tasksCache) {
-        console.log("comparing with id " + tasksCache[taskIndex].id)
         if (tasksCache[taskIndex].id == id) {
             return true;
         }
@@ -30,7 +29,7 @@ function addTask() {
                 var jsonResponse = JSON.parse(xhr.responseText)
 
                 if (jsonResponse["name"] == undefined) {
-                    alert('Project with name ' + projectName + ' does not exist. Check project is not archived.')
+                    alert('Project with name ' + projectName + ' does not exist. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -61,7 +60,7 @@ function addTeammate() {
                 console.log(xhr.responseText)
 
                 if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Teammate with name ' + teammateName + ' already exists. Check project is not archived.')
+                    alert('Teammate with name ' + teammateName + ' already exists. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -92,7 +91,7 @@ function deleteTeammate() {
                 console.log(xhr.responseText)
 
                 if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Teammate with name ' + teammateName + ' does not exists. Check project is not archived.')
+                    alert('Teammate with name ' + teammateName + ' does not exists. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -126,7 +125,7 @@ function assignTeammate() {
                 console.log(xhr.responseText)
 
                 if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Desired Task and/or Teammate do not exists. Check project is not archived.')
+                    alert('Desired Task and/or Teammate do not exists. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -160,7 +159,7 @@ function unassignTeammate() {
                 console.log(xhr.responseText)
 
                 if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Desired Task and/or Teammate do not exists. Check project is not archived.')
+                    alert('Desired Task and/or Teammate do not exists. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -193,8 +192,44 @@ function markTask() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 console.log(xhr.responseText)
 
+                var jsonResponse = JSON.parse(xhr.responseText)
+
+                if (jsonResponse["statusCode"] == 400) {
+                    alert('Desired Task does not exist or status was invalid. Make sure the project is not archived.')
+                } else {
+                    loadProjectWithName(projectName)
+                }
+            } else {
+                alert('Something went wrong')
+            }
+        }
+    }
+}
+
+function renameTask() {
+    var projectHeader = document.getElementById("create-header").innerHTML
+    var projectName = projectHeader.substring(projectHeader.indexOf(" ") + 1)
+    var taskID = document.getElementById("rename-taskid-input").value
+    var newName = document.getElementById("rename-name-input").value
+
+    if (taskID == '' || newName == '') {
+        alert('Please input a task ID and a teammate name into the box below \'Mark Task\'')
+    } else if (!checkTaskID(taskID)) {
+        alert('The task with that id does not exist.')
+    } else {
+        var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/task/rename/' + projectName + "/" + taskID + "/" + newName
+
+        var xhr = new XMLHttpRequest()
+        xhr.open('POST', url, true)
+
+        xhr.send()
+
+        xhr.onloadend = function() {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                console.log(xhr.responseText)
+
                 if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Desired Task does not exist or status was invalid. Check project is not archived.')
+                    alert('Desired Task does not exist or status was invalid. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
@@ -227,8 +262,10 @@ function decomposeTask() {
             if (xhr.readyState == XMLHttpRequest.DONE) {
                 console.log(xhr.responseText)
 
-                if (xhr.responseText == null || xhr.responseText == "null") {
-                    alert('Desired Task does not exist. Check project is not archived.')
+                var jsonResponse = JSON.parse(xhr.responseText)
+
+                if (jsonResponse["statusCode"] == 400) {
+                    alert('Desired Task does not exist. Make sure the project is not archived.')
                 } else {
                     loadProjectWithName(projectName)
                 }
