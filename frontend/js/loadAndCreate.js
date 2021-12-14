@@ -86,6 +86,8 @@ function renderProject(response) {
 }
 
 function renderTasks(response) {
+    var idMap = new Map()
+
     var divStr = ""
 
     var tasks = response["tasks"]
@@ -93,25 +95,83 @@ function renderTasks(response) {
     console.log(tasks.length)
 
     for (var index in tasks) {
-        divStr += "<div class=\"padded\">"
+        if (idMap.get(index) != true) {
+            idMap.set(index, true)
 
-        divStr += "name: " + tasks[index].name + "<br>"
-        divStr += "id: " + tasks[index].id + "<br>"
-        divStr += "status: " + tasks[index].markStatus + "<br>"
-
-        divStr += "Assigned teamates: "
-        if (tasks[index].teammates.length == 0) {
-            divStr += "None"
-        } else {
-            for (var tmIndex in tasks[index].teammates) {
-                divStr += "<br><p style=\"text-indent: 20px\">" + tasks[index].teammates[tmIndex].name + "</p>"
-            }
+            divStr += renderTask(tasks, index, 0, idMap) // top level task
         }
 
-        divStr += "</div>"
+        // divStr += "<div class=\"padded\">"
+
+        // divStr += "name: " + tasks[index].name + "<br>"
+        // divStr += "id: " + tasks[index].id + "<br>"
+        // divStr += "status: " + tasks[index].markStatus + "<br>"
+
+        // divStr += "Assigned teamates: "
+        // if (tasks[index].teammates.length == 0) {
+        //     divStr += "None"
+        // } else {
+        //     divStr += "<br>"
+        //     for (var tmIndex in tasks[index].teammates) {
+        //         divStr += "<p style=\"text-indent: 20px\">" + tasks[index].teammates[tmIndex].name + "</p>"
+        //     }
+        // }
+
+        // divStr += "</div>"
     }
 
     document.getElementById("task-view").innerHTML = divStr;
+}
+
+function renderTask(tasks, index, indentLevel, map) {
+    console.log(tasks)
+    console.log("rendering " + index)
+    map.set(index, true)
+
+    // var indentStr = ""
+    // var indentStrEnd = ""
+    // for (var i = 0; i < indentLevel; i++) {
+    //     indentStr += "<p style=\"text-indent: 20px\">"
+    //     indentStrEnd += "</p>"
+    // }
+
+    var indentStr = "<p style=\"text-indent: "+ (20 * indentLevel) +"px\">"
+    var indentStrEnd = "</p>"
+
+    var divStr = indentStr + "<div class=\"padded\">"
+
+    divStr += indentStr + "name: " + tasks[index].name + "<br>" + indentStrEnd
+    divStr += indentStr + "id: " + tasks[index].id + "<br>" + indentStrEnd
+    divStr += indentStr + "status: " + tasks[index].markStatus + "<br>" + indentStrEnd
+
+    if (tasks[index].leafTask) {
+        divStr += indentStr + "Assigned teamates: " + indentStrEnd
+        if (tasks[index].teammates.length == 0) {
+            divStr += "<p style=\"text-indent: "+ (20 * (indentLevel + 1)) +"px\">None</p>"
+        } else {
+            //divStr += indentStr + "<br>" + indentStrEnd
+            for (var tmIndex in tasks[index].teammates) {
+                divStr += "<p style=\"text-indent: "+ (20 * (indentLevel + 1)) +"px\">" + tasks[index].teammates[tmIndex].name + "</p>"
+            }
+        }
+    } else {
+        divStr += indentStr + "Subtasks: " + indentStrEnd
+
+        for (var subtaskID in tasks[index].subtasks) {
+            var subtaskIndex = null
+            for (var taskIndex in tasks) {
+                if (tasks[taskIndex].id == tasks[index].subtasks[subtaskID]) {
+                    subtaskIndex = taskIndex
+                }
+            }
+
+            divStr += renderTask(tasks, subtaskIndex, indentLevel + 1, map)
+        }
+    }
+
+    divStr += "</div>"
+
+    return divStr;
 }
 
 function renderTeammates(response) {
