@@ -4,6 +4,7 @@ public class AssignTaskRequest {
     String projectName;
     int taskId;
     String teammateName;
+    boolean assign; // false for unassign
 
     public void setProjectName(String name){
         projectName = name;
@@ -29,10 +30,19 @@ public class AssignTaskRequest {
         return teammateName;   
     }
 
-    public AssignTaskRequest(String projectName, int taskId, String teammateName){
+    public void setAssign(boolean assign) {
+        this.assign = assign;
+    }
+
+    public boolean getAssign() {
+        return assign;
+    }
+
+    public AssignTaskRequest(String projectName, int taskId, String teammateName, boolean assign){
         this.projectName = projectName;
         this.taskId = taskId;
         this.teammateName = teammateName;
+        this.assign = assign;
     }
 
     public AssignTaskRequest(){
