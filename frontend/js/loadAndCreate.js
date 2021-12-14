@@ -95,24 +95,27 @@ function renderTasks(response) {
     var tasks = response["tasks"]
     tasksCache = response["tasks"]
 
+    var num = 1
     for (var index in tasks) {
         if (idMap.get(index) != true) {
             idMap.set(index, true)
 
-            divStr += renderTask(tasks, index, 0, idMap) // top level task
+            divStr += renderTask(tasks, index, 0, idMap, num++) // top level task
         }
     }
 
-    document.getElementById("task-view").innerHTML = divStr;
+    document.getElementById("task-view").innerHTML = divStr
 }
 
-function renderTask(tasks, index, indentLevel, map) {
+function renderTask(tasks, index, indentLevel, map, labelNum) {
     map.set(index, true)
 
     var indentStr = "<p style=\"text-indent: "+ (20 * indentLevel) +"px\">"
     var indentStrEnd = "</p>"
 
     var divStr = indentStr + "<div class=\"padded\">"
+
+    divStr += "<h2 style=\"text-indent: "+ (20 * (indentLevel)) +"px\">" + labelNum + "</h2>"
 
     divStr += indentStr + "name: " + tasks[index].name + "<br>" + indentStrEnd
     divStr += indentStr + "id: " + tasks[index].id + "<br>" + indentStrEnd
@@ -137,7 +140,10 @@ function renderTask(tasks, index, indentLevel, map) {
     } else {
         divStr += indentStr + "Subtasks: " + indentStrEnd
 
+        var sublabelNum = 1
         for (var subtaskID in tasks[index].subtasks) {
+            
+
             var subtaskIndex = null
             for (var taskIndex in tasks) {
                 if (tasks[taskIndex].id == tasks[index].subtasks[subtaskID]) {
@@ -145,13 +151,13 @@ function renderTask(tasks, index, indentLevel, map) {
                 }
             }
 
-            divStr += renderTask(tasks, subtaskIndex, indentLevel + 1, map)
+            divStr += renderTask(tasks, subtaskIndex, indentLevel + 1, map, labelNum + "." + sublabelNum++)
         }
     }
 
     divStr += "</div>"
 
-    return divStr;
+    return divStr
 }
 
 function renderTeammates(response) {
@@ -165,7 +171,7 @@ function renderTeammates(response) {
         divStr += "</div>"
     }
 
-    document.getElementById("teammate-view").innerHTML = divStr;
+    document.getElementById("teammate-view").innerHTML = divStr
 }
 
 function renderLandingPage() {
