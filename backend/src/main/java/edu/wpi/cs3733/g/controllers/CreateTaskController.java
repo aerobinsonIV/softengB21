@@ -12,12 +12,15 @@ public class CreateTaskController implements RequestHandler<CreateTaskRequest, T
     public Task handleRequest(CreateTaskRequest req, Context context) {
         System.out.println(req);
         try {
+            if (DatabaseAccess.getProject(req.getProjectName()).getIsArchived()) {
+                return null;
+            }
+
             return DatabaseAccess.createTask(new Project(req.getProjectName()), new Task(req.getTaskName()));
         } catch (Exception e) {
             System.out.println("Failure");
             e.printStackTrace();
-            // TODO: Swap to some sort of GenericErrorResponse
-            return new Task(null);
+            return null;
         }
     }
 }

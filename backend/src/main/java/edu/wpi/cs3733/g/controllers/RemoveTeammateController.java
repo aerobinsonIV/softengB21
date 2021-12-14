@@ -11,6 +11,10 @@ public class RemoveTeammateController implements RequestHandler<RemoveTeammateRe
     @Override
     public Project handleRequest(RemoveTeammateRequest input, Context context) {
         try {
+            if (DatabaseAccess.getProject(input.getProjectName()).getIsArchived()) {
+                return null;
+            }
+
             if (DatabaseAccess.removeTeammate(new Teammate(input.getName(), input.getProjectName()))) {
                 return DatabaseAccess.getProject(input.getProjectName());
             }
