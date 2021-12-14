@@ -6,7 +6,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import edu.wpi.cs3733.g.db.DatabaseAccess;
 import edu.wpi.cs3733.g.entities.Project;
 import edu.wpi.cs3733.g.entities.Task;
-import edu.wpi.cs3733.g.entities.TaskMarkValue;
 import edu.wpi.cs3733.g.requests.DecomposeTaskRequest;
 import edu.wpi.cs3733.g.responses.GenericResponse;
 
@@ -21,8 +20,8 @@ public class DecomposeTaskController implements RequestHandler<DecomposeTaskRequ
 
             Task child = DatabaseAccess.createTask(project, new Task(input.getChildName()));
             DatabaseAccess.setTaskParent(input.getParentID(), child.getId());
-            DatabaseAccess.markTask(input.getParentID(), TaskMarkValue.IN_PROGRESS); // in progress because child is in progress
             DatabaseAccess.reassignTask(input.getParentID(), child.getId()); // move all teammates from parent to child
+            DatabaseAccess.updateParentStatus(child.getId());
 
             return new GenericResponse(200, "Task successfully decomposed");
         } catch (Exception e) {

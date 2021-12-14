@@ -35,7 +35,11 @@ public class AssignTaskController implements RequestHandler<AssignTaskRequest, T
         }
 
         try {
-            DatabaseAccess.createTaskAssignment(req.getProjectName(), req.getTaskId(), req.getTeammateName());
+            if (req.getAssign()) {
+                DatabaseAccess.createTaskAssignment(req.getProjectName(), req.getTaskId(), req.getTeammateName());
+            } else {
+                DatabaseAccess.removeTaskAssignment(req.getTaskId(), req.getTeammateName());
+            }
 
         } catch (Exception e) {
             System.out.println("Failed create task assignment");

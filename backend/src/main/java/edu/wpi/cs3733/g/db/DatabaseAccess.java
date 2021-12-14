@@ -238,14 +238,25 @@ public class DatabaseAccess {
         }
     }
 
-    public static boolean createTaskAssignment(String projectName, int taskId, String teammate_name) throws Exception {
+    public static boolean createTaskAssignment(String projectName, int taskId, String teammateName) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("insert into task_assignments values (?, ?, ?);");
             statement.setString(1, "" + taskId);
-            statement.setString(2, teammate_name);
+            statement.setString(2, teammateName);
             statement.setString(3, projectName);
             statement.execute();
             return true;
+        } catch (Exception e) {
+            throw new Exception("Failed to create task assignment!");
+        }
+    }
+
+    public static void removeTaskAssignment(int taskId, String teammateName) throws Exception {
+        try {
+            PreparedStatement statement = connect().prepareStatement("delete from task_assignments where teammate_name = ? and task = ?");
+            statement.setString(1, teammateName);
+            statement.setInt(2, taskId);
+            statement.execute();
         } catch (Exception e) {
             throw new Exception("Failed to create task assignment!");
         }

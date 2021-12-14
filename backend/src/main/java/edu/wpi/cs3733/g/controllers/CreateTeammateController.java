@@ -10,6 +10,10 @@ public class CreateTeammateController implements RequestHandler<CreateTeammateRe
     @Override
     public Teammate handleRequest(CreateTeammateRequest input, Context context) {
         try {
+            if (DatabaseAccess.getProject(input.getProjectName()).getIsArchived()) {
+                return null;
+            }
+
             if (DatabaseAccess.createTeammate(new Teammate(input.getName(), input.getProjectName()))) {
                 return new Teammate(input.getName(), input.getProjectName());
             }
