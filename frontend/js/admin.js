@@ -28,6 +28,23 @@ function renderProjects(projects) {
     for (var index in projects) {
         innerHTMLStr += "<div id=" + projects[index].name + " class=\"padded\">"
         innerHTMLStr += projects[index].name + " : " + (projects[index].isArchived ? "" : "Not ") + "Archived"
+
+        var totalComplete = 0
+        var totalTasks = 0
+
+        for (var taskIndex in projects[index].tasks) {
+            if (projects[index].tasks[taskIndex].markStatus == "COMPLETE") {
+                totalComplete++;
+            }
+            totalTasks++;
+        }
+
+        var percent = (100 * totalComplete / totalTasks).toFixed(1) 
+        if (totalTasks == 0) {
+            percent = 100
+        }
+
+        innerHTMLStr += "<br>" + percent +"% Complete"
         innerHTMLStr += "</div>"
     }
 
