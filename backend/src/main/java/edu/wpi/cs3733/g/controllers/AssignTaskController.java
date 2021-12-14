@@ -14,11 +14,20 @@ public class AssignTaskController implements RequestHandler<AssignTaskRequest, T
     @Override
     public Task handleRequest(AssignTaskRequest req, Context context) {
         try {
-            if(! DatabaseAccess.checkProjectExists(req.getProjectName())){ // this is where the problem happens
+            if(!DatabaseAccess.checkProjectExists(req.getProjectName())) {
                 System.out.println("Project does not exist");
                 return null;
             }
 
+            if (DatabaseAccess.getProject(req.getProjectName()).getIsArchived()) {
+                System.out.println("Project is archived");
+                return null;
+            }
+
+            if (DatabaseAccess.hasChild(req.getTaskId())) {
+                System.out.println("Cannot assign teammate to task with subtasks");
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("Failed to access database to check if project exists");
             e.printStackTrace();
@@ -40,15 +49,15 @@ public class AssignTaskController implements RequestHandler<AssignTaskRequest, T
 
             ArrayList<Task> tasks = modifiedProject.getTasks();
 
-            for(Task task : tasks){
-                if(task.getId() == req.getTaskId()){
+            for(Task task : tasks) {
+                if(task.getId() == req.getTaskId()) {
                     return task;
                 }
             }
 
             System.out.println("Couldn't find modified task!");
             return null;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Failed to retrieve modified task");
             e.printStackTrace();
             return null;

@@ -238,7 +238,7 @@ public class DatabaseAccess {
         }
     }
 
-    public static boolean createTaskAssignment(String projectName, int taskId, String teammate_name) throws Exception{
+    public static boolean createTaskAssignment(String projectName, int taskId, String teammate_name) throws Exception {
         try {
             PreparedStatement statement = connect().prepareStatement("insert into task_assignments values (?, ?, ?);");
             statement.setString(1, "" + taskId);
@@ -248,6 +248,17 @@ public class DatabaseAccess {
             return true;
         } catch (Exception e) {
             throw new Exception("Failed to create task assignment!");
+        }
+    }
+
+    public static void reassignTask(int oldTaskID, int newTaskID) throws Exception {
+        try {
+            PreparedStatement statement = connect().prepareStatement("update task_assignments set task = ? where task = ?");
+            statement.setInt(1, newTaskID);
+            statement.setInt(2, oldTaskID);
+            statement.execute();
+        } catch (Exception e) {
+            throw new Exception("Failed to reassign task teammates!");
         }
     }
 
@@ -406,10 +417,23 @@ public class DatabaseAccess {
         }
     }
 
+    public static boolean hasChild(int taskID) throws Exception {
+        try {
+            Connection conn = DatabaseAccess.connect();
+            PreparedStatement checkParent = conn.prepareStatement("select * from task where parent = ?");
+            checkParent.setInt(1, taskID);
+            ResultSet rs = checkParent.executeQuery();
+
+            return rs.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Failed to set parent task.");
+        }
+    }
+
     public static void setTaskParent(int parentID, int childID) throws Exception {
         try {
             Connection conn = DatabaseAccess.connect();
-
             PreparedStatement proj = conn.prepareStatement("update task set parent = ? where id = ?");
 
             proj.setInt(1, parentID);
