@@ -47,7 +47,6 @@ function deleteProject() {
     xhr.onloadend = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             console.log(xhr.responseText)
-            var jsonResponse = JSON.parse(xhr.responseText)
 
             if (xhr.responseText == null || xhr.responseText == "null") {
                 alert('Could not delete project ' + name + '.')
@@ -74,10 +73,33 @@ function archiveProject() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             console.log(xhr.responseText)
 
-            var jsonResponse = JSON.parse(xhr.responseText)
-
             if (xhr.responseText == null || xhr.responseText == "null") {
                 alert("Could not archive project " + projectName + ".")
+            } else {
+                loadProjects()
+            }
+        } else {
+            alert("Something went wrong.")
+        }
+    }
+}
+
+function unarchiveProject() {
+    var url = 'https://5odsqadon5.execute-api.us-east-1.amazonaws.com/GFinal/project/unarchive/'
+
+    var projectName = document.getElementById("unarchive-input").value
+
+    var xhr = new XMLHttpRequest()
+    xhr.open("POST", url + projectName, true)
+
+    xhr.send()
+
+    xhr.onloadend = () => {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            console.log(xhr.responseText)
+
+            if (xhr.responseText == null || xhr.responseText == "null") {
+                alert("Could not unarchive project " + projectName + ".")
             } else {
                 loadProjects()
             }
