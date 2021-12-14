@@ -116,7 +116,13 @@ function renderTask(tasks, index, indentLevel, map) {
 
     divStr += indentStr + "name: " + tasks[index].name + "<br>" + indentStrEnd
     divStr += indentStr + "id: " + tasks[index].id + "<br>" + indentStrEnd
-    divStr += indentStr + "status: " + tasks[index].markStatus + "<br>" + indentStrEnd
+    var statusStr = tasks[index].markStatus
+    if (statusStr == "IN_PROGRESS") {
+        statusStr += "❌"
+    } else {
+        statusStr += "✅"
+    }
+    divStr += indentStr + "status: " + statusStr + "<br>" + indentStrEnd
 
     if (tasks[index].leafTask) {
         divStr += indentStr + "Assigned teamates: " + indentStrEnd
