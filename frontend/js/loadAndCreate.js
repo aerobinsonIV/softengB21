@@ -1,3 +1,5 @@
+var tasksCache = null
+
 function createProject() {
     var name = document.getElementById("create-input").value
 
@@ -86,32 +88,77 @@ function renderProject(response) {
 }
 
 function renderTasks(response) {
+    var idMap = new Map()
+
     var divStr = ""
 
     var tasks = response["tasks"]
+    tasksCache = response["tasks"]
 
-    console.log(tasks.length)
-
+    var num = 1
     for (var index in tasks) {
-        divStr += "<div class=\"padded\">"
+        if (idMap.get(index) != true) {
+            idMap.set(index, true)
 
-        divStr += "name: " + tasks[index].name + "<br>"
-        divStr += "id: " + tasks[index].id + "<br>"
-        divStr += "status: " + tasks[index].markStatus + "<br>"
-
-        divStr += "Assigned teamates: "
-        if (tasks[index].teammates.length == 0) {
-            divStr += "None"
-        } else {
-            for (var tmIndex in tasks[index].teammates) {
-                divStr += "<br><p style=\"text-indent: 20px\">" + tasks[index].teammates[tmIndex].name + "</p>"
-            }
+            divStr += renderTask(tasks, index, 0, idMap, num++) // top level task
         }
-
-        divStr += "</div>"
     }
 
-    document.getElementById("task-view").innerHTML = divStr;
+    document.getElementById("task-view").innerHTML = divStr
+}
+
+function renderTask(tasks, index, indentLevel, map, labelNum) {
+    map.set(index, true)
+
+    var indentStr = "<p style=\"text-indent: "+ (20 * indentLevel) +"px\">"
+    var indentStrEnd = "</p>"
+
+    var divStr = indentStr + "<div class=\"padded\">"
+
+    divStr += "<h2 style=\"text-indent: "+ (20 * (indentLevel)) +"px\">" + labelNum + "</h2>"
+
+    var taskName = tasks[index].name.replaceAll("%20", " ")
+    divStr += indentStr + "name: " + taskName + "<br>" + indentStrEnd
+    divStr += indentStr + "id: " + tasks[index].id + "<br>" + indentStrEnd
+    var statusStr = tasks[index].markStatus
+    if (statusStr == "IN_PROGRESS") {
+        statusStr += "❌"
+    } else {
+        statusStr += "✅"
+    }
+    divStr += indentStr + "status: " + statusStr + "<br>" + indentStrEnd
+
+    if (tasks[index].leafTask) {
+        divStr += indentStr + "Assigned teamates: " + indentStrEnd
+        if (tasks[index].teammates.length == 0) {
+            divStr += "<p style=\"text-indent: "+ (20 * (indentLevel + 1)) +"px\">None</p>"
+        } else {
+            //divStr += indentStr + "<br>" + indentStrEnd
+            for (var tmIndex in tasks[index].teammates) {
+                divStr += "<p style=\"text-indent: "+ (20 * (indentLevel + 1)) +"px\">" + tasks[index].teammates[tmIndex].name + "</p>"
+            }
+        }
+    } else {
+        divStr += indentStr + "Subtasks: " + indentStrEnd
+
+        var sublabelNum = 1
+        for (var subtaskID in tasks[index].subtasks) {
+            
+
+            var subtaskIndex = null
+            for (var taskIndex in tasks) {
+                if (tasks[taskIndex].id == tasks[index].subtasks[subtaskID]) {
+                    subtaskIndex = taskIndex
+                }
+            }
+
+            divStr += renderTask(tasks, subtaskIndex, indentLevel + 1, map, labelNum + "." + sublabelNum++)
+        }
+    }
+
+    divStr += "</div>"
+
+    return divStr
 }
 
 function renderTeammates(response) {
@@ -119,15 +166,13 @@ function renderTeammates(response) {
 
     var teammates = response["team"]
 
-    console.log(teammates.length)
-
     for (var index in teammates) {
         divStr += "<div>"
         divStr += teammates[index].name + "<br>"
         divStr += "</div>"
     }
 
-    document.getElementById("teammate-view").innerHTML = divStr;
+    document.getElementById("teammate-view").innerHTML = divStr
 }
 
 function renderLandingPage() {

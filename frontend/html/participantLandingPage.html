@@ -35,20 +35,68 @@
 
         <h1 id="add-task-header" class="hidden">Add Task</h1>
         <form id="add-task-form" method="post" class="hidden">
+            <h3 id="add-task-input-label" class="hidden">Task Name</h3>
             <input id="add-task-input" value="" />
             <input type="button" value="Submit" onClick="JavaScript:addTask()">
         </form>
 
-        <h1 id="add-teammate-header" class="hidden">Add Teammate</h1>
+        <h1 id="add-subtask-header" class="hidden">Add Subtask to Task</h1>
+        <form id="add-subtask-form" method="post" class="hidden">
+            <h3 id="add-taskid-input-label" class="hidden">Parent Task ID</h3>
+            <input id="add-taskid-input" value="" />
+            <h3 id="add-childname-input-label" class="hidden">Child Task Name (Creates a new task)</h3>
+            <input id="add-childname-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:decomposeTask()">
+        </form>
+
+        <h1 id="mark-task-header" class="hidden">Mark Task</h1>
+        <form id="mark-task-form" method="post" class="hidden">
+            <h3 id="mark-taskid-label" class="hidden">Task ID</h3>
+            <input id="mark-taskid-input" value="" />
+            <h3 id="mark-status-label" class="hidden">Task Status (either 'in_progress' or 'complete')</h3>
+            <input id="mark-status-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:markTask()">
+        </form>
+
+        <h1 id="rename-task-header" class="hidden">Rename Task</h1>
+        <form id="rename-task-form" method="post" class="hidden">
+            <h3 id="rename-taskid-label" class="hidden">Task ID</h3>
+            <input id="rename-taskid-input" value="" />
+            <h3 id="rename-name-label" class="hidden">New Task Name</h3>
+            <input id="rename-name-input" value="" />
+            <input type="button" value="Submit" onClick="JavaScript:renameTask()">
+        </form>
+
+        <h1 id="add-teammate-header" class="hidden">Add Teammate To Project</h1>
         <form id="add-teammate-form" method="post" class="hidden">
+            <h3 id="add-teammate-input-label" class="hidden">Teammate Name</h3>
             <input id="add-teammate-input" value="" />
             <input type="button" value="Submit" onClick="Javascript:addTeammate()">
         </form>
 
-        <h1 id="remove-teammate-header" class="hidden">Remove Teammate</h1>
+        <h1 id="remove-teammate-header" class="hidden">Remove Teammate From Project</h1>
         <form id="remove-teammate-form" method="post" class="hidden">
+            <h3 id="remove-teammate-input-label" class="hidden">Teammate Name</h3>
             <input id="remove-teammate-input" value="" />
             <input type="button" value="Submit" onClick="Javascript:deleteTeammate()">
+        </form>
+
+        <h1 id="assign-teammate-header" class="hidden">Assign Teammate To Task</h1>
+        <form id="assign-teammate-form" method="post" class="hidden">
+            <h3 id="assign-taskid-input-labels" class="hidden">Task ID</h3>
+            <input id="assign-taskid-input" value="" />
+            <h3 id="assign-teammate-input-label" class="hidden">Teammate Name</h3>
+            <input id="assign-teammate-input" value="" />
+            <input type="button" value="Submit" onClick="Javascript:assignTeammate()">
+        </form>
+
+        <h1 id="unassign-teammate-header" class="hidden">Unassign Teammate From Task</h1>
+        <form id="unassign-teammate-form" method="post" class="hidden">
+            <h3 id="unassign-taskid-input-label" class="hidden">Task ID</h3>
+            <input id="unassign-taskid-input" value="" />
+            <h3 id="unassign-teammate-input-label" class="hidden">Teammate name</h3>
+            <input id="unassign-teammate-input" value="" />
+            <input type="button" value="Submit" onClick="Javascript:unassignTeammate()">
         </form>
 
         <h1 id="tasks-header" class="hidden">Tasks:</h1>
